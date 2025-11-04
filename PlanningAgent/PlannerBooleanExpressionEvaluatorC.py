@@ -4,7 +4,14 @@
 
 # Import libraries.
 
-import "BooleanExpressionEvaluatorA.rb"
+# Import Project classes.
+
+import Global
+
+from BooleanExpressionEvaluatorA import BooleanExpressionEvaluatorA
+from PlannerIsConditionConstructC import PlannerIsConditionConstructC
+
+
 #import "Conditions/PlanterboxIsConditionConstructC.rb"
 #import "Conditions/PlanterboxContainsConditionConstructC.rb"
 #import "Conditions/PlanterboxLessThanConditionConstructC.rb"
@@ -28,8 +35,8 @@ class PlannerBooleanExpressionEvaluatorC(BooleanExpressionEvaluatorA):
 
         # Create a Hashtable of the set of allowable condition constructs.
 
-        self.conditionConstructLibrary = []
- #       self.conditionConstructLibrary["IS"]   = PlanterboxIsConditionConstructC.new
+        self.conditionConstructLibrary = {}
+        self.conditionConstructLibrary["IS"]   = PlannerIsConditionConstructC()
  #       self.conditionConstructLibrary["CONTAINS"] = PlanterboxContainsConditionConstructC.new
  #       self.conditionConstructLibrary["LESSTHAN"] = PlanterboxLessThanConditionConstructC.new
  #       self.conditionConstructLibrary["GREATERTHAN"] = PlanterboxGreaterThanConditionConstructC.new
@@ -47,17 +54,27 @@ class PlannerBooleanExpressionEvaluatorC(BooleanExpressionEvaluatorA):
         if Global._debug: print("LeftOperand =", self.leftOperand)
 
         constructComponents = self.leftOperand.split(" ", 3)
-        subjectComponent = constructComponents[0].delete('()').strip
-        verbComponent = constructComponents[1].upcase.delete('()').strip
-        predicateComponent = constructComponents[2].delete('()').strip
+
+        print ("Construct components = ", constructComponents)
+
+        subjectComponent = constructComponents[0].replace("(", "") 
+        subjectComponent = subjectComponent.replace(")", "").strip() 
+      
+        verbComponent = constructComponents[1].upper().replace("(", "")
+        verbComponent = verbComponent.replace(")", "").strip() 
+
+        predicateComponent = constructComponents[2].replace("(", "")
+        predicateComponent = predicateComponent.replace(")", "").strip()
 
         if Global._debug: print("subject:", subjectComponent)
         if Global._debug: print("verb:", verbComponent)
         if Global._debug: print("predicate:", predicateComponent)
 
-        conditionHash = []
+        conditionHash = {}
         conditionHash["keyword"] = subjectComponent
         conditionHash["value"]   = predicateComponent
 
-        return self.conditionConstructLibrary[verbComponent].evaluate(@dataDictionary, conditionHash)
+        print ("AM I HERE>>>>", conditionHash)
+
+        return self.conditionConstructLibrary[verbComponent].evaluate(self.dataDictionary, conditionHash)
 

@@ -5,7 +5,7 @@
 # Import libraries.
 
 from abc import ABC, abstractmethod
-
+import re
 
 # Import Project classes.
 
@@ -29,9 +29,35 @@ class BooleanExpressionEvaluatorA(ABC):
     
         self.booleanExpression = []
 
+        print ("boolean expression: ", booleanExpression)
+
         # Split the boolean expression based the language constructs.
 
-        self.tempExpression = booleanExpression.split(/(?<=[\!\[\]\)])/).map(&:strip)
+        self.tempExpression = re.split(r"([\[\!\]\);])", booleanExpression)
+
+        #self.tempExpression = booleanExpression.split(/(?<=[\!\[\]\)])/).map(&:strip)
+       # self.tempExpression = re.split(r"/(?<=[\!\[\]\)])/", booleanExpression)
+
+       # pattern_literal_brackets = r'/([\!\[\]\)])/'
+       # self.tempExpression = re.split(pattern_literal_brackets, booleanExpression)
+#match = re.search(r'word:\w\w\w', str)
+#re.sub(r"\.\[\d+\]",'',value)
+
+       # text = "This is [data] in brackets."
+        # Matches the literal '[' and ']' characters
+       # pattern_literal_brackets = r'\[|\]'
+       # matches_literal_brackets = re.findall(pattern_literal_brackets, text)
+       # print(matches_literal_brackets)
+
+
+        print ("tempExpression = ", self.tempExpression)
+
+      #  s = "apple,banana;cherry grapes"
+
+      #  print ("Testing s: ", s)
+        # Split by comma, semicolon, or space
+      #  self.tempExpression = re.split(r"([\[\!\];])", booleanExpression)
+      #  print(self.tempExpression)
 
         if Global._debug: print ("Parsed boolean expression", self.tempExpression)
 
@@ -39,26 +65,42 @@ class BooleanExpressionEvaluatorA(ABC):
 
         for token in self.tempExpression:
 
-            if Global._debug: print("Token:", token)
+            token = token.strip()
+
+            if (len(token) == 0):
+                print("NIL => moving on")
+                next
+
+            if Global._debug: print("Token:", token, len(token))
            
             # Determine if the token is an AND or OR.
 
-            if (token.upcase.start_with?("AND")):
+            if (token.upper().startswith("AND")):   # Add upper case
 
                 # AND clause.
+                print ("!!!! AND")
 
                 self.booleanExpression.append("AND")
-                token = (token.split("AND", 2).map(&:strip))[1]
+            #    token = (token.split("AND", 2).map(&:strip))[1]
+                token = re.split("AND", token)[1]
+                print ("TOKEN AFTER AND:", token)
 
-            elsif (token.upcase.start_with?("OR")):
+            elif (token.upper().startswith("OR")):   # Add upper case
 
                 # OR clause.
 
+                print ("!!!! OR")
                 self.booleanExpression.append("OR")
-                token = (token.split("OR", 2).map(&:strip))[1]
+             #   token = (token.split("OR", 2).map(&:strip))[1]
+                token = re.split("OR", token)[1]
+                print ("TOKEN AFTER OR:", token)
+
+            elif (token == ')'):
+                next
 
             self.booleanExpression.append(token)
 
+        print ("booleanExpression=", self.booleanExpression)
 
         self.dataDictionary = dataDictionary
         self.postToken = ""
@@ -72,9 +114,11 @@ class BooleanExpressionEvaluatorA(ABC):
 
     def evaluateBooleanExpression(self):
 
+        print ("FDDFDJKFJKFJDKFD")
         leftBoolResult = False
 
         leftBoolResult = self.evaluateOrExpression()
+        print ("!!!!!!!!!!!!evaluateBooleanExpression -> self.postToken", self.postToken)
 
         # Determine if the end of line character has been reached.
 
@@ -90,6 +134,8 @@ class BooleanExpressionEvaluatorA(ABC):
 
             # raise "ERROR: missing end of boolean expression token - ; in #{@booleanExpression}"
             print ("ERROR: missing end of boolean expression token - ; in", self.booleanExpression)
+
+        return False
 
 
     # Private methods
@@ -108,7 +154,8 @@ class BooleanExpressionEvaluatorA(ABC):
         # Get the left condition boolean result for the AND condition
         # as AND takes precedence over OR.
 
-        leftBoolResult = evaluateAndExpression()
+        leftBoolResult = self.evaluateAndExpression()
+        print ("!!!!!!!!!!evaluateOrExpression -> self.postToken", self.postToken)
 
         # Do while the OR condition.
 
@@ -116,16 +163,16 @@ class BooleanExpressionEvaluatorA(ABC):
 
             # Evaluate the AND condition.
 
-            rightBoolResult = evaluateAndExpression()
+            rightBoolResult = self.evaluateAndExpression()
 
             # Determine if the OR condition is True or False.
             # (T | F) = T; T | T = T etc.
 
-            if ((leftBoolResult == true) || (rightBoolResult == true)):
+            if ((leftBoolResult == True) or (rightBoolResult == True)):
 
-                leftBoolResult = true
+                leftBoolResult = True
             else:
-                leftBoolResult = false
+                leftBoolResult = False
 
             
         # Return the left boolean condition result.
@@ -145,7 +192,8 @@ class BooleanExpressionEvaluatorA(ABC):
         # Evaluate the sub condition to get the left boolean
         # result.
 
-        leftBoolResult = evaluateSubCondition()
+        leftBoolResult = self.evaluateSubCondition()
+        print ("!!!!!!!!!!!!evaluateAndExpression -> self.postToken", self.postToken)
 
         # Is the token an AND.
 
@@ -153,16 +201,16 @@ class BooleanExpressionEvaluatorA(ABC):
 
             # Evaluate the AND condition expression.
 
-            rightBoolResult = evaluateAndExpression()
+            rightBoolResult = self.evaluateAndExpression()
 
             # Determine if the AND condition is True or False.
             # (T & F) = F; T & T = T etc.
                 
-            if ((leftBoolResult == true) && (rightBoolResult == true)):
+            if ((leftBoolResult == True) and (rightBoolResult == True)):
 
-                leftBoolResult = true
+                leftBoolResult = True
             else:
-                leftBoolResult = false
+                leftBoolResult = False
 
         # Return the left boolean condition result.
 
@@ -180,7 +228,7 @@ class BooleanExpressionEvaluatorA(ABC):
 
         # Get the next token in the expression.
 
-        self.leftOperand = nextTokenInExpression()
+        self.leftOperand = self.nextTokenInExpression()
 
         # Determine if this is a NOT (!) operation.
 
@@ -189,10 +237,10 @@ class BooleanExpressionEvaluatorA(ABC):
             # It is a NOT (!) operation.
 
             isNotExpression = True
-            self.leftOperand = nextTokenInExpression()
+            self.leftOperand = self.nextTokenInExpression()
 
   
-
+        print ("Self.leftOperand = ", self.leftOperand)
         # Determine if this is a left bracket for order of operations.
 
         if (self.leftOperand == "["):
@@ -200,7 +248,7 @@ class BooleanExpressionEvaluatorA(ABC):
             # It is a left bracket, therefore start by evaluating the
             # OR expression.
 
-            leftBoolResult = evaluateOrExpression()
+            leftBoolResult = self.evaluateOrExpression()
 
             # Determine if the next token is the right bracket to end 
             # an order of operations expression.
@@ -234,7 +282,7 @@ class BooleanExpressionEvaluatorA(ABC):
 
                     # Get the next token in the expression.
 
-                    self.postToken = nextTokenInExpression()
+                    self.postToken = self.nextTokenInExpression()
                 
                 else:
 
@@ -249,7 +297,7 @@ class BooleanExpressionEvaluatorA(ABC):
 
                 # Evaluate the condition.
 
-                expressionResult = evaluateConstruct()
+                expressionResult = self.evaluateConstruct()
 
                 if Global._debug: print(self.booleanExpression, "is", expressionResult)
 
@@ -257,12 +305,12 @@ class BooleanExpressionEvaluatorA(ABC):
                 
                 if (expressionResult == True):
 
-                    self.postToken = nextTokenInExpression()
+                    self.postToken = self.nextTokenInExpression()
                     leftBoolResult = True
 
                 else:
                    
-                    self.postToken = nextTokenInExpression()
+                    self.postToken = self.nextTokenInExpression()
                     leftBoolResult = False
 
         # Return the boolean result.
