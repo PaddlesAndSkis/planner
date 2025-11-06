@@ -2,18 +2,26 @@
 # PlanningAgent
 
 # Import Project classes.
-from PlannerBooleanExpressionEvaluatorC import PlannerBooleanExpressionEvaluatorC
+
+from AgentC import AgentC
+from EnvironmentC import EnvironmentC
+from PlannerControllerC import PlannerControllerC
 
 
 def main():
-    print ("Hello")
 
-    condition = "[(cam is 55) AND (cam is westboro)] OR [(cam is 55) AND (cam is Ottawa)] ;"
-    dataDictionary = {"CAM" : "55"}
+    print ("Starting the Agent Planning Session")
 
-    plannerBooleanExpressionEvaluator = PlannerBooleanExpressionEvaluatorC(condition, dataDictionary)
-    conditionBooleanResult = plannerBooleanExpressionEvaluator.evaluateBooleanExpression()
+    my_agent = AgentC()
+    my_environment = EnvironmentC("APM", "my_data_file.xlsx", "apm_rules.json")
 
-# Start the Agent.
+    planner_controller = PlannerControllerC(my_agent, my_environment)
+
+    planner_controller.start_planning_session()
+   
+    print ("Agent Planning Session complete.")
+
+
+# Start the Agent Planning Session.
 
 main()
