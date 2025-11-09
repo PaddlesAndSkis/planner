@@ -1,15 +1,16 @@
 # PlannerAddNodeActionConstructC
 
 from PlannerActionConstructA import PlannerActionConstructA
+from PlannerGraphActionConstructA import PlannerGraphActionConstructA
 import Global
 
 import networkx as nx
 
 
-class PlannerAddNodeActionConstructC(PlannerActionConstructA):
+class PlannerAddNodeActionConstructC(PlannerGraphActionConstructA):
    
     def __init__(self):
-        self.G = nx.DiGraph()
+        super().__init__()
 
 
     def invokeAction(self, dataDictionary, actionData):
@@ -24,7 +25,7 @@ class PlannerAddNodeActionConstructC(PlannerActionConstructA):
 
         self.G.add_node(myValue, node=myValue, application=myKey)
 
-        dataDictionary[myKey] = myValue
+        print("!!!!!!!!!!!!!!! NODES:", self.G.nodes)
 
         return dataDictionary
 

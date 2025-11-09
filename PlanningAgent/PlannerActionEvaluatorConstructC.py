@@ -5,6 +5,8 @@
 # Import libraries.
 
 from PlannerSetActionConstructC import PlannerSetActionConstructC
+from PlannerAddNodeActionConstructC import PlannerAddNodeActionConstructC
+from PlannerAddEdgeActionConstructC import PlannerAddEdgeActionConstructC
 import Global
 
 
@@ -20,6 +22,8 @@ class PlannerActionEvaluatorConstructC:
 
         self.actionConstructLibrary = {}
         self.actionConstructLibrary["SET"]   = PlannerSetActionConstructC()
+        self.actionConstructLibrary["ADD_NODE"]   = PlannerAddNodeActionConstructC()
+        self.actionConstructLibrary["ADD_EDGE"]   = PlannerAddEdgeActionConstructC()
 
 
 

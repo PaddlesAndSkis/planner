@@ -104,7 +104,7 @@ class KnowledgeBaseC:
         # Rule 6.
 
         condition = "[(business_value_rules is Complete)] ;"
-        action = "ADD_EDGE $current_node$ to BV-$business_value$"
+        action = "ADD_EDGE BV-$business_value$ to $current_node$"
 
         rule = { "condition" : condition, "action" : action }
         self.rules.append(rule)
