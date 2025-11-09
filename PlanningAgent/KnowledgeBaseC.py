@@ -37,7 +37,8 @@ class KnowledgeBaseC:
         application = "App1"
         current_effectiveness = "good"
 
-        self.data_dictionary.update({ "application" : application, "current_effectiveness" : current_effectiveness })
+        self.data_dictionary.update({ "APPLICATION" : application, "CURRENT_EFFECTIVENESS" : current_effectiveness,
+                                      "CURRENT_NODE" : "Start"})
 
 
     def __load_rules(self):
@@ -68,6 +69,22 @@ class KnowledgeBaseC:
         rule = { "condition" : condition, "action" : action }
         self.rules.append(rule)
 
+        # Rule 3a.
+
+        condition = "[(business_value is Low)] ;"
+        action = "SET edge_weight to 1"
+
+        rule = { "condition" : condition, "action" : action }
+        self.rules.append(rule)
+
+        # Rule 3b.
+
+        condition = "[(business_value is High)] ;"
+        action = "SET edge_weight to 3"
+
+        rule = { "condition" : condition, "action" : action }
+        self.rules.append(rule)
+
         # Rule 4.
 
         condition = "[(business_value is High)] OR [(business_value is Low)] ;"
@@ -79,12 +96,28 @@ class KnowledgeBaseC:
         # Rule 5.
 
         condition = "[(business_value_rules is Complete)] ;"
-        action = "ADD_NODE $application$ to $business_value$"
+        action = "ADD_NODE $application$ to BV-$business_value$"
 
         rule = { "condition" : condition, "action" : action }
         self.rules.append(rule)
 
         # Rule 6.
+
+        condition = "[(business_value_rules is Complete)] ;"
+        action = "ADD_EDGE $current_node$ to BV-$business_value$"
+
+        rule = { "condition" : condition, "action" : action }
+        self.rules.append(rule)
+
+        # Rule 7.
+
+        condition = "[(business_value_rules is Complete)] ;"
+        action = "SET current_node to BV-$business_value$"
+
+        rule = { "condition" : condition, "action" : action }
+        self.rules.append(rule)
+
+        # Rule 8.
 
         condition = "[(business_value_rules is Complete)] ;"
         action = "SET layer to technical condition"

@@ -74,8 +74,14 @@ class PlannerControllerC:
 
         # into its tokens.
 
-        tempStringArray = re.split(r"/(\w*\$\w+\$)/", stringLine)
+     #   tempStringArray = re.split(r"/(\w*\$\w+\$)/", stringLine)
+       # tempStringArray = re.split(r"(\w+\$)", stringLine)
+        tempStringArray = re.split(r'(\$.*?\$)', stringLine)
+       # tempStringArray = re.findall(r"(\w+\$)", stringLine, flags=0)
         #self.tempExpression = re.split(r"([\!\[\]\(\)])", booleanExpression)
+
+        print ("stringLine = ", stringLine)
+        print ("tempStringArray = ", tempStringArray)
 
         newStringLine = ""
 
@@ -85,24 +91,29 @@ class PlannerControllerC:
 
             # Check to see if the token is a variable (e.g., $var$).
 
+            if Global._debug: print ("HERE...", token)
+
             #if (token.match(/\w*\$\w+\$/))
 
-            if (re.search(r"/(\w*\$\w+\$)/", token, flags=0)):
+            if (re.search(r"(\$.*?\$)", token)):
 
-               # Variable is present - remove the $ delimiters.
+                if Global._debug: print ("THERE")
 
-               token = token.delete("$")
+                # Variable is present - remove the $ delimiters.
 
-               # Look up the data value for this variable in the 
-               # data dictionary Hashtable and set that as the new token
-               # value.
+                token = token[1:len(token)-1]
+                if Global._debug: print ("THERE", token)
 
-               token = dataDictionary[token.upper()]
+                # Look up the data value for this variable in the 
+                # data dictionary Hashtable and set that as the new token
+                # value.
 
-               if Global._debug: print ("TOKEN   NOW IS", token)
+                token = dataDictionary[token.upper()]
 
-               # Set the new string (e.g., condition, action) to include the
-               # token value.
+                if Global._debug: print ("TOKEN   NOW IS", token)
+
+            # Set the new string (e.g., condition, action) to include the
+            # token value.
 
             newStringLine = newStringLine + token 
 
