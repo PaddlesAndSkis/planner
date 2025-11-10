@@ -5,7 +5,7 @@ import Global
 
 class PlannerSetActionConstructC(PlannerActionConstructA):
    
-    def invokeAction(self, dataDictionary, actionData):
+    def invokeAction(self, dataDictionary, actionData, plannerKnowledgeGraph):
 
         print ("In SET with", actionData)
         print ("In SET with", dataDictionary)

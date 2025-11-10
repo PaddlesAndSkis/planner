@@ -8,6 +8,7 @@ import Global
 
 from PlannerBooleanExpressionEvaluatorC import PlannerBooleanExpressionEvaluatorC
 from PlannerActionEvaluatorConstructC import PlannerActionEvaluatorConstructC
+from PlannerKnowledgeGraphC import PlannerKnowledgeGraphC
 from KnowledgeBaseC import KnowledgeBaseC
 
 
@@ -30,7 +31,11 @@ class PlannerControllerC:
         print ("Hello")
 
         kb = KnowledgeBaseC()
+        planner_knowledge_graph = PlannerKnowledgeGraphC()
+
         plannerActionEvaluator = PlannerActionEvaluatorConstructC()
+
+
 
         rules = kb.get_rules()
         data_dictionary = kb.get_data_dictionary()
@@ -66,10 +71,19 @@ class PlannerControllerC:
                 # Invoke the action for the plant.
 
          #       plannerActionEvaluator = PlannerActionEvaluatorConstructC()
-                data_dictionary = plannerActionEvaluator.invokeAction(action, data_dictionary)
+                data_dictionary = plannerActionEvaluator.invokeAction(action, data_dictionary, planner_knowledge_graph)
 
                 if Global._debug: print ("*********************data_dictionary is now:", data_dictionary)
 
+        # Lastly (for now), print out the graph.
+
+        planner_knowledge_graph.print_node_applications("TC-Low")
+        planner_knowledge_graph.print_leaf_nodes()
+        planner_knowledge_graph.add_end_node()
+        
+        planner_knowledge_graph.print()
+        planner_knowledge_graph.print_shortest_path()
+        
 
     def resolveVariables(self, stringLine, dataDictionary):     
 

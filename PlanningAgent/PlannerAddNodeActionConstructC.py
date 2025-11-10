@@ -1,10 +1,13 @@
 # PlannerAddNodeActionConstructC
 
+# Import Project classes.
+
 from PlannerActionConstructA import PlannerActionConstructA
 from PlannerGraphActionConstructA import PlannerGraphActionConstructA
-import Global
 
-import networkx as nx
+# Import libraries.
+
+import Global
 
 
 class PlannerAddNodeActionConstructC(PlannerGraphActionConstructA):
@@ -13,25 +16,23 @@ class PlannerAddNodeActionConstructC(PlannerGraphActionConstructA):
         super().__init__()
 
 
-    def invokeAction(self, dataDictionary, actionData):
+    def invokeAction(self, dataDictionary, actionData, plannerKnowledgeGraph):
 
         print ("In ADD_NODE with", actionData)
         print ("In ADD_NODE with", dataDictionary)
 
-        myKey   = actionData[1].upper()  # .strip()
-        myValue = actionData[3]  #.delete('()').strip
+        # "ADD_NODE <application> to <node_name>"
 
-        print ("In ADD_NODE with myKey : myValue", myKey, " ->", myValue)
+        application = actionData[1] #.upper()  # .strip()
+        node_name   = actionData[3]  #.delete('()').strip
 
-        self.G.add_node(myValue, node=myValue, application=myKey)
+        print ("In ADD_NODE with application to add to node_name: ", application, "will be added to", node_name)
 
-        print("!!!!!!!!!!!!!!! NODES:", self.G.nodes)
-        print("!!!!!!!!!!!!!!! NODES:", self.G.nodes)
-        print("!!!!!!!!!!!!!!! NODES:", self.G.nodes)
-        print("!!!!!!!!!!!!!!! NODES:", self.G.nodes)
-        print("!!!!!!!!!!!!!!! NODES:", self.G.nodes)
-        print("!!!!!!!!!!!!!!! NODES:", self.G.nodes)
-        print("!!!!!!!!!!!!!!! NODES:", self.G.nodes)
+        # Add the graph node to the Planner Knowledge Graph.
+
+        plannerKnowledgeGraph.add_node(node_name, application)
+
+        # self.G.add_node(myValue, node=myValue, application=myKey)
 
         return dataDictionary
 

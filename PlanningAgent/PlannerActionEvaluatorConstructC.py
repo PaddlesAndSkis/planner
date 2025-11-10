@@ -32,7 +32,7 @@ class PlannerActionEvaluatorConstructC:
     # [in]: action - the action to take once the condition constructs evaluate to True
     # [in]: dataDictionary - the dictionary of variables (keyword-value pairs)
 
-    def invokeAction(self, action, dataDictionary):
+    def invokeAction(self, action, dataDictionary, plannerKnowledgeGraph):
 
         if Global._debug: print ("INVOKING ACTION!!!")
 
@@ -51,6 +51,6 @@ class PlannerActionEvaluatorConstructC:
 
         # Invoke the action.
 
-        dataDictionary = self.actionConstructLibrary[actionComponent].invokeAction(dataDictionary, actionData)
+        dataDictionary = self.actionConstructLibrary[actionComponent].invokeAction(dataDictionary, actionData, plannerKnowledgeGraph)
 
         return dataDictionary

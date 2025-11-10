@@ -1,19 +1,22 @@
 # PlannerAddNodeActionConstructC
 
+# Import Project classes.
+
 from PlannerActionConstructA import PlannerActionConstructA
 import Global
 
-import networkx as nx
+# Import libraries.
+
 from abc import ABC, abstractmethod
+
 
 class PlannerGraphActionConstructA(PlannerActionConstructA, ABC):
    
     def __init__(self):
-        self.G = nx.DiGraph()
-        self.G.add_node("Start", node="Start", application="n/a")
+        pass
 
 
-    def invokeAction(self, dataDictionary, actionData):
+    def invokeAction(self, dataDictionary, actionData, plannerKnowledgeGraph):
 
         print ("ABATRACT CLSSS")
 
