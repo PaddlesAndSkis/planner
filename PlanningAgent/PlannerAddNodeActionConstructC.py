@@ -26,6 +26,12 @@ class PlannerAddNodeActionConstructC(PlannerGraphActionConstructA):
         self.G.add_node(myValue, node=myValue, application=myKey)
 
         print("!!!!!!!!!!!!!!! NODES:", self.G.nodes)
+        print("!!!!!!!!!!!!!!! NODES:", self.G.nodes)
+        print("!!!!!!!!!!!!!!! NODES:", self.G.nodes)
+        print("!!!!!!!!!!!!!!! NODES:", self.G.nodes)
+        print("!!!!!!!!!!!!!!! NODES:", self.G.nodes)
+        print("!!!!!!!!!!!!!!! NODES:", self.G.nodes)
+        print("!!!!!!!!!!!!!!! NODES:", self.G.nodes)
 
         return dataDictionary
 

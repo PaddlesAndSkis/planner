@@ -30,6 +30,7 @@ class PlannerControllerC:
         print ("Hello")
 
         kb = KnowledgeBaseC()
+        plannerActionEvaluator = PlannerActionEvaluatorConstructC()
 
         rules = kb.get_rules()
         data_dictionary = kb.get_data_dictionary()
@@ -64,7 +65,7 @@ class PlannerControllerC:
 
                 # Invoke the action for the plant.
 
-                plannerActionEvaluator = PlannerActionEvaluatorConstructC()
+         #       plannerActionEvaluator = PlannerActionEvaluatorConstructC()
                 data_dictionary = plannerActionEvaluator.invokeAction(action, data_dictionary)
 
                 if Global._debug: print ("*********************data_dictionary is now:", data_dictionary)

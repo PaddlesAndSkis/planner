@@ -36,8 +36,10 @@ class KnowledgeBaseC:
 
         application = "App1"
         current_effectiveness = "good"
+        operating_system = "good"
 
         self.data_dictionary.update({ "APPLICATION" : application, "CURRENT_EFFECTIVENESS" : current_effectiveness,
+                                      "OPERATING_SYSTEM" : "okay",
                                       "CURRENT_NODE" : "Start"})
 
 
@@ -104,7 +106,7 @@ class KnowledgeBaseC:
         # Rule 6.
 
         condition = "[(business_value_rules is Complete)] ;"
-        action = "ADD_EDGE BV-$business_value$ to $current_node$"
+        action = "ADD_EDGE BV-$business_value$ to $current_node$ weighted $edge_weight$"
 
         rule = { "condition" : condition, "action" : action }
         self.rules.append(rule)
@@ -120,11 +122,91 @@ class KnowledgeBaseC:
         # Rule 8.
 
         condition = "[(business_value_rules is Complete)] ;"
-        action = "SET layer to technical condition"
+        action = "SET layer to technical_condition"
 
         rule = { "condition" : condition, "action" : action }
         self.rules.append(rule)
 
 
+
+        # Rule 1.
+
+        condition = "[(layer is technical_condition)] ;"
+        action = "SET technical_condition to High"
+
+        rule = { "condition" : condition, "action" : action }
+        self.rules.append(rule)
+
+        # Rule 2.
+
+        condition = "[(layer is technical_condition)] AND [(operating_system is good) OR (operating_system is great)] ;"
+        action = "SET technical_condition to High"
+
+        rule = { "condition" : condition, "action" : action }
+        self.rules.append(rule)
+
+        # Rule 3.
+
+        condition = "[(layer is technical_condition)] AND [(operating_system is okay) OR (operating_system is bad)] ;"
+        action = "SET technical_condition to Low"
+
+        rule = { "condition" : condition, "action" : action }
+        self.rules.append(rule)
+
+        # Rule 3a.
+
+        condition = "[(technical_condition is Low)] ;"
+        action = "SET edge_weight to 1"
+
+        rule = { "condition" : condition, "action" : action }
+        self.rules.append(rule)
+
+        # Rule 3b.
+
+        condition = "[(technical_condition is High)] ;"
+        action = "SET edge_weight to 3"
+
+        rule = { "condition" : condition, "action" : action }
+        self.rules.append(rule)
+
+        # Rule 4.
+
+        condition = "[(technical_condition is High)] OR [(technical_condition is Low)] ;"
+        action = "SET technical_condition_rules to Complete"
+
+        rule = { "condition" : condition, "action" : action }
+        self.rules.append(rule)
+
+        # Rule 5.
+
+        condition = "[(technical_condition_rules is Complete)] ;"
+        action = "ADD_NODE $application$ to TC-$technical_condition$"
+
+        rule = { "condition" : condition, "action" : action }
+        self.rules.append(rule)
+
+        # Rule 6.
+
+        condition = "[(technical_condition_rules is Complete)] ;"
+        action = "ADD_EDGE TC-$technical_condition$ to $current_node$ weighted $edge_weight$"
+
+        rule = { "condition" : condition, "action" : action }
+        self.rules.append(rule)
+
+        # Rule 7.
+
+        condition = "[(technical_condition_rules is Complete)] ;"
+        action = "SET current_node to TC-$technical_condition$"
+
+        rule = { "condition" : condition, "action" : action }
+        self.rules.append(rule)
+
+        # Rule 8.
+
+        condition = "[(technical_condition_rules is Complete)] ;"
+        action = "SET layer to application_cost"
+
+        rule = { "condition" : condition, "action" : action }
+        self.rules.append(rule)
 
 
