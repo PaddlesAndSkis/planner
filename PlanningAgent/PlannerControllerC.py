@@ -35,54 +35,67 @@ class PlannerControllerC:
 
         plannerActionEvaluator = PlannerActionEvaluatorConstructC()
 
+        # Get the data set from the Environment.
 
+        data_list = self.environment.load_data()
+
+        print ("dat_list = ", data_list)
+        # Get the rules.
 
         rules = kb.get_rules()
+
+        # Get the initial data dictionary.
+
         data_dictionary = kb.get_data_dictionary()
 
-        for rule in rules:
+        for datum in data_list:
 
-            if Global._debug: print ("Evaluating:", rule)
-            if Global._debug: print ("data_dictionary is:", data_dictionary)
+            data_dictionary.update(datum)
 
-            condition = rule["condition"]
+            for rule in rules:
 
-            # Resolve any variables that are present in the condition.
+                if Global._debug: print ("Evaluating:", rule)
+                if Global._debug: print ("data_dictionary is:", data_dictionary)
 
-            condition = self.resolveVariables(condition, data_dictionary)
+                condition = rule["condition"]
 
-            plannerBooleanExpressionEvaluator = PlannerBooleanExpressionEvaluatorC(condition, data_dictionary)
-            conditionBooleanResult = plannerBooleanExpressionEvaluator.evaluateBooleanExpression()
+                # Resolve any variables that are present in the condition.
 
-            print ("The final result is: ", conditionBooleanResult)
+                condition = self.resolveVariables(condition, data_dictionary)
+
+                plannerBooleanExpressionEvaluator = PlannerBooleanExpressionEvaluatorC(condition, data_dictionary)
+                conditionBooleanResult = plannerBooleanExpressionEvaluator.evaluateBooleanExpression()
+
+                print ("The final result is: ", conditionBooleanResult)
 
             
-            if (conditionBooleanResult):
+                if (conditionBooleanResult):
 
-                # Get the operation / action that this plant will do during its growth spurt.
+                    # Get the operation / action that this plant will do during its growth spurt.
 
-                action = rule["action"]
+                    action = rule["action"]
 
-                # Resolve any variables that are present in the action.
+                    # Resolve any variables that are present in the action.
 
-                action = self.resolveVariables(action, data_dictionary)
-                if Global._debug: print ("Firing...", action)
+                    action = self.resolveVariables(action, data_dictionary)
+                    if Global._debug: print ("Firing...", action)
 
-                # Invoke the action for the plant.
+                    # Invoke the action for the plant.
 
-         #       plannerActionEvaluator = PlannerActionEvaluatorConstructC()
-                data_dictionary = plannerActionEvaluator.invokeAction(action, data_dictionary, planner_knowledge_graph)
+             #       plannerActionEvaluator = PlannerActionEvaluatorConstructC()
+                    data_dictionary = plannerActionEvaluator.invokeAction(action, data_dictionary, planner_knowledge_graph)
 
-                if Global._debug: print ("*********************data_dictionary is now:", data_dictionary)
+                    if Global._debug: print ("*********************data_dictionary is now:", data_dictionary)
 
         # Lastly (for now), print out the graph.
 
-        planner_knowledge_graph.print_node_applications("TC-Low")
+        planner_knowledge_graph.print_node_applications("1.1.1.1")
         planner_knowledge_graph.print_leaf_nodes()
         planner_knowledge_graph.add_end_node()
         
         planner_knowledge_graph.print()
         planner_knowledge_graph.print_shortest_path()
+        planner_knowledge_graph.print_longest_path()
         
 
     def resolveVariables(self, stringLine, dataDictionary):     

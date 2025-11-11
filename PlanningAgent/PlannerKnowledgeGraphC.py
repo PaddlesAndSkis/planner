@@ -65,7 +65,10 @@ class PlannerKnowledgeGraphC:
         if Global._debug: print ("\nShortest path by weight:", nx.shortest_path(self.G, source_node, dest_node, weight='weight'))
         if Global._debug: print ("\nShortest path length:", nx.shortest_path_length(self.G, source_node, dest_node, weight='weight'))
 
-        
+    def print_longest_path(self):
+
+        if Global._debug: print ("\nLongest path:", nx.dag_longest_path(self.G, weight='weight'))
+
     def print(self):
 
         print("!!!! NODES:", self.G.nodes)
