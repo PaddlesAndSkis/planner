@@ -1,5 +1,7 @@
 # KnowledgeBaseC
 
+import json
+
 class KnowledgeBaseC:
     
     def __init__(self):
@@ -7,8 +9,9 @@ class KnowledgeBaseC:
         self.rules = []  # [] of {}
 
         self.__load_data_dictionary()
-        self.__load_rules()
+  #      self.__load_rules()
 
+        self.__load_rules_from_json()
 
 
     def get_data_dictionary(self) -> {}:
@@ -41,6 +44,29 @@ class KnowledgeBaseC:
      #   self.data_dictionary.update({ "APPLICATION" : application, "CURRENT_EFFECTIVENESS" : current_effectiveness,
       #                                "OPERATING_SYSTEM" : "okay",
       #                                "CURRENT_NODE" : "Start"})
+
+    def __load_rules_from_json(self):
+
+        # Open the JSON file in read mode.
+
+        with open('Planner_Rules.json', 'r') as f:
+
+            # Load the JSON data into a Python dictionary
+            rules = json.load(f)
+        
+        for rule in rules:
+
+            print ("RUle -->", rule)
+
+            rule = { "ID" : rule["id"],
+                     "name" : rule["name"], 
+                     "description" : rule["description"],
+                     "condition" : rule["condition"], 
+                     "action" : rule["action"]
+                    }
+
+            self.rules.append(rule)
+
 
 
     def __load_rules(self):

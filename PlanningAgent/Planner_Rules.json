@@ -1,0 +1,103 @@
+[
+    {
+        "id": "BV-1",
+        "name": "Set Default Business Value",
+        "description": "Initialize the business value.",
+        "condition": "[(layer is business_value)] ;",
+        "action": "SET business_value to High"
+    },
+
+    {
+        "id": "BV-2",
+        "name": "Current Effectiveness - High",
+        "description": "Identify high business value.",
+        "condition": "[(layer is business_value)] AND [(current_effectiveness is good) OR (current_effectiveness is great)] ;",
+        "action": "SET business_value to High"
+    },
+
+    {
+        "id": "BV-3",
+        "name": "Current Effectiveness - Low",
+        "description": "Identify low business value.",
+        "condition": "[(layer is business_value)] AND [(current_effectiveness is okay) OR (current_effectiveness is bad)] ;",
+        "action": "SET business_value to Low"
+    },
+
+    {
+        "id": "BV-4",
+        "name": "Low Business Value Edge Weight",
+        "description": "Initialize the business value.",
+        "condition": "[(business_value is Low)] ;",
+        "action": "SET edge_weight to 1"
+    },
+
+    {
+        "id": "BV-5",
+        "name": "Low Business Value Node ID",
+        "description": "Initialize the business value.",
+        "condition": "[(business_value is Low)] ;",
+        "action": "SET node_id to 1"
+    },
+
+    {
+        "id": "BV-6",
+        "name": "High Business Value Edge Weight",
+        "description": "Initialize the business value.",
+        "condition": "[(business_value is High)] ;",
+        "action": "SET edge_weight to 3"
+    },
+
+    {
+        "id": "BV-7",
+        "name": "High Business Value Node ID",
+        "description": "Initialize the business value.",
+        "condition": "[(business_value is High)] ;",
+        "action": "SET node_id to 2"
+    },
+
+    {
+        "id": "BV-8",
+        "name": "Complete Business Value Rule",
+        "description": "Initialize the business value.",
+        "condition": "[(business_value is High)] OR [(business_value is Low)] ;",
+        "action": "SET business_value_rules to Complete"
+    },
+
+    {
+        "id": "BV-9",
+        "name": "Add Business Value Node",
+        "description": "Initialize the business value.",
+        "condition": "[(business_value_rules is Complete)] ;",
+        "action": "ADD_NODE $application$ to $node_id$"
+    },
+
+    {
+        "id": "BV-10",
+        "name": "Add Business Value Edge",
+        "description": "Initialize the business value.",
+        "condition": "[(business_value_rules is Complete)] ;",
+        "action": "ADD_EDGE $node_id$ to $current_node$ weighted $edge_weight$"
+    },
+
+    {
+        "id": "BV-11",
+        "name": "Set Current Business Value Node",
+        "description": "Initialize the business value.",
+        "condition": "[(business_value_rules is Complete)] ;",
+        "action": "SET current_node to $node_id$"
+    },
+
+    {
+        "id": "BV-12",
+        "name": "Move to Technical Condition Layer",
+        "description": "Initialize the business value.",
+        "condition": "[(business_value_rules is Complete)] ;",
+        "action": "SET layer to technical_condition"
+    }
+
+]
+
+
+
+
+
