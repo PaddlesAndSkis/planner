@@ -10,12 +10,8 @@ import Global
 
 from BooleanExpressionEvaluatorA import BooleanExpressionEvaluatorA
 from PlannerIsConditionConstructC import PlannerIsConditionConstructC
-
-
-#import "Conditions/PlanterboxIsConditionConstructC.rb"
-#import "Conditions/PlanterboxContainsConditionConstructC.rb"
-#import "Conditions/PlanterboxLessThanConditionConstructC.rb"
-#import "Conditions/PlanterboxGreaterThanConditionConstructC.rb"
+from PlannerIsGreaterThanConditionConstructC import PlannerIsGreaterThanConditionConstructC
+from PlannerIsLessThanConditionConstructC import PlannerIsLessThanConditionConstructC
 
 # Class: PlannerBooleanExpressionEvaluatorC
 
@@ -32,14 +28,14 @@ class PlannerBooleanExpressionEvaluatorC(BooleanExpressionEvaluatorA):
 
         super().__init__(booleanExpression, dataDictionary)
 
-
         # Create a Hashtable of the set of allowable condition constructs.
 
         self.conditionConstructLibrary = {}
-        self.conditionConstructLibrary["IS"]   = PlannerIsConditionConstructC()
+        self.conditionConstructLibrary["IS"]              = PlannerIsConditionConstructC()
+        self.conditionConstructLibrary["IS_GREATER_THAN"] = PlannerIsGreaterThanConditionConstructC()
+        self.conditionConstructLibrary["IS_LESS_THAN"]    = PlannerIsLessThanConditionConstructC()
+
  #       self.conditionConstructLibrary["CONTAINS"] = PlanterboxContainsConditionConstructC.new
- #       self.conditionConstructLibrary["LESSTHAN"] = PlanterboxLessThanConditionConstructC.new
- #       self.conditionConstructLibrary["GREATERTHAN"] = PlanterboxGreaterThanConditionConstructC.new
  
 
 

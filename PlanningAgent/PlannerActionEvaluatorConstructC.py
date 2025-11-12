@@ -5,8 +5,10 @@
 # Import libraries.
 
 from PlannerSetActionConstructC import PlannerSetActionConstructC
+from PlannerAddActionConstructC import PlannerAddActionConstructC
 from PlannerAddNodeActionConstructC import PlannerAddNodeActionConstructC
 from PlannerAddEdgeActionConstructC import PlannerAddEdgeActionConstructC
+
 import Global
 
 
@@ -21,10 +23,11 @@ class PlannerActionEvaluatorConstructC:
         # Create a Hashtable of the set of allowable condition constructs.
 
         self.actionConstructLibrary = {}
-        self.actionConstructLibrary["SET"]   = PlannerSetActionConstructC()
-        self.actionConstructLibrary["ADD_NODE"]   = PlannerAddNodeActionConstructC()
-        self.actionConstructLibrary["ADD_EDGE"]   = PlannerAddEdgeActionConstructC()
-
+        self.actionConstructLibrary["SET"]             = PlannerSetActionConstructC()
+        self.actionConstructLibrary["ADD"]             = PlannerAddActionConstructC()
+        self.actionConstructLibrary["ADD_NODE"]        = PlannerAddNodeActionConstructC()
+        self.actionConstructLibrary["ADD_EDGE"]        = PlannerAddEdgeActionConstructC()
+        
 
 
     # invokeAction
