@@ -17,7 +17,7 @@ class PlannerIsLessThanConditionConstructC(PlannerConditionConstructA):
 
     def evaluate(self, dataDictionary, conditionHash):
 
-        print("In PlannerIsGreaterThanConditionConstructC")
+        print("In PlannerIsLessThanConditionConstructC")
 
         # Get the keyword-value from the condition Hash.
 
@@ -47,7 +47,7 @@ class PlannerIsLessThanConditionConstructC(PlannerConditionConstructA):
 
                 print (dataDictionaryValue,"=",myValue)
 
-                if (dataDictionaryValue < int(myValue)):
+                if (int(dataDictionaryValue) < int(myValue)):
                     print ("GOOD!!")
                     return True
                 elif (myValue == 'empty') and (dataDictionaryValue == ""):

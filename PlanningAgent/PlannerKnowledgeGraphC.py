@@ -55,6 +55,10 @@ class PlannerKnowledgeGraphC:
 
         print ("leaf nodes:", leaf_nodes)
 
+        for leaf_node in leaf_nodes:
+            self.print_node_applications(leaf_node)
+
+
     def print_shortest_path(self):
 
         source_node = "Start"
