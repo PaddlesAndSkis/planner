@@ -1,99 +1,607 @@
 [
-    {
-        "id": "BV-1",
-        "name": "Set Default Business Value",
-        "description": "Initialize the business value.",
-        "condition": "[(layer is business_value)] ;",
-        "action": "SET business_value to High"
-    },
 
-    {
-        "id": "BV-2",
-        "name": "Current Effectiveness - High",
-        "description": "Identify high business value.",
-        "condition": "[(layer is business_value)] AND [(current_effectiveness is good) OR (current_effectiveness is great)] ;",
-        "action": "SET business_value to High"
-    },
+  {
+    "id": "BV-1a",
+    "name": "Set Default Business Value",
+    "description": "Using default logic, initialize the business value to Low only changing with new information.",
+    "condition": "[(layer is business_value)] ;",
+    "action": "SET business_value to Low"
+  },
 
-    {
-        "id": "BV-3",
-        "name": "Current Effectiveness - Low",
-        "description": "Identify low business value.",
-        "condition": "[(layer is business_value)] AND [(current_effectiveness is okay) OR (current_effectiveness is bad)] ;",
-        "action": "SET business_value to Low"
-    },
+  {
+    "id": "BV-1b",
+    "name": "Set Default Business Value Score",
+    "description": "Initialize the business value score.",
+    "condition": "[(layer is business_value)] ;",
+    "action": "SET business_value_score to 0"
+  },
 
-    {
-        "id": "BV-4",
-        "name": "Low Business Value Edge Weight",
-        "description": "Initialize the business value.",
-        "condition": "[(business_value is Low)] ;",
-        "action": "SET edge_weight to 1"
-    },
+  {
+    "id": "BV-2",
+    "name": "User Base Assessment",
+    "description": "Score the number of users.",
+    "condition": "[(layer is business_value)] AND [(number_users is_greater_than 999)] ;",
+    "action": "ADD 1 to business_value_score"
+  },
 
-    {
-        "id": "BV-5",
-        "name": "Low Business Value Node ID",
-        "description": "Initialize the business value.",
-        "condition": "[(business_value is Low)] ;",
-        "action": "SET node_id to 1"
-    },
+  {
+    "id": "BV-3",
+    "name": "Client Satisfaction Assessment",
+    "description": "Score how well the application is working.",
+    "condition": "[(layer is business_value)] AND [(client_satisfaction is good) OR (client_satisfaction is great)]  ;",
+    "action": "ADD 1 to business_value_score"
+  },
 
-    {
-        "id": "BV-6",
-        "name": "High Business Value Edge Weight",
-        "description": "Initialize the business value.",
-        "condition": "[(business_value is High)] ;",
-        "action": "SET edge_weight to 3"
-    },
+  {
+    "id": "BV-4",
+    "name": "Business Criticality Assessment",
+    "description": "Score the criticality of the application to the business.",
+    "condition": "[(layer is business_value)] AND [(business_criticality is critical)] ;",
+    "action": "ADD 1 to business_value_score"
+  },
 
-    {
-        "id": "BV-7",
-        "name": "High Business Value Node ID",
-        "description": "Initialize the business value.",
-        "condition": "[(business_value is High)] ;",
-        "action": "SET node_id to 2"
-    },
+  {
+    "id": "BV-5",
+    "name": "Business Value Assessment",
+    "description": "Assess the business value based on the score.",
+    "condition": "[(layer is business_value)] AND [(business_value_score is_greater_than 2) OR [(business_value_score is 2) AND (business_criticality is critical)] ;",
+    "action": "SET business_value to High"
+  },
 
-    {
-        "id": "BV-8",
-        "name": "Complete Business Value Rule",
-        "description": "Initialize the business value.",
-        "condition": "[(business_value is High)] OR [(business_value is Low)] ;",
-        "action": "SET business_value_rules to Complete"
-    },
+  {
+    "id": "BV-6a",
+    "name": "Low Assessment Score Edge Weight",
+    "description": "Set the low assessment edge weighting for the business value layer.",
+    "condition": "[(business_value is Low)] ;",
+    "action": "SET edge_weight to 1"
+  },
 
-    {
-        "id": "BV-9",
-        "name": "Add Business Value Node",
-        "description": "Initialize the business value.",
-        "condition": "[(business_value_rules is Complete)] ;",
-        "action": "ADD_NODE $application$ to $node_id$"
-    },
+  {
+    "id": "BV-6b",
+    "name": "High Assessment Score Edge Weight",
+    "description": "Set the high assessment edge weighting for the business value layer.",
+    "condition": "[(business_value is High)] ;",
+    "action": "SET edge_weight to 3"
+  },
 
-    {
-        "id": "BV-10",
-        "name": "Add Business Value Edge",
-        "description": "Initialize the business value.",
-        "condition": "[(business_value_rules is Complete)] ;",
-        "action": "ADD_EDGE $node_id$ to $current_node$ weighted $edge_weight$"
-    },
+  {
+    "id": "BV-7a",
+    "name": "Low Business Value Node ID",
+    "description": "Set the node ID for the low business value node.",
+    "condition": "[(business_value is Low)] ;",
+    "action": "SET node_id to 1"
+  },
 
-    {
-        "id": "BV-11",
-        "name": "Set Current Business Value Node",
-        "description": "Initialize the business value.",
-        "condition": "[(business_value_rules is Complete)] ;",
-        "action": "SET current_node to $node_id$"
-    },
+  {
+    "id": "BV-7b",
+    "name": "High Business Value Node ID",
+    "description": "Set the node ID for the low business value node.",
+    "condition": "[(business_value is High)] ;",
+    "action": "SET node_id to 2"
+  },
 
-    {
-        "id": "BV-12",
-        "name": "Move to Technical Condition Layer",
-        "description": "Initialize the business value.",
-        "condition": "[(business_value_rules is Complete)] ;",
-        "action": "SET layer to technical_condition"
-    }
+  {
+    "id": "BV-8",
+    "name": "Complete Business Value Rule",
+    "description": "Indicate that the business value assessment is complete.",
+    "condition": "[(business_value is High)] OR [(business_value is Low)] ;",
+    "action": "SET business_value_assessment to Complete"
+  },
+
+  {
+    "id": "BV-9",
+    "name": "Add Business Value Node to Graph",
+    "description": "Add the application to the node for the Business Value assessment.  Create the node if non-existent.",
+    "condition": "[(business_value_assessment is Complete)] ;",
+    "action": "ADD_NODE $application$ to $node_id$ named $business_value$_business_value"
+  },
+
+  {
+    "id": "BV-10",
+    "name": "Add Business Value Edge to Graph",
+    "description": "Add the edge from the current node to the node for the Business Value assessment.  Use a weighting.",
+    "condition": "[(business_value_assessment is Complete)] ;",
+    "action": "ADD_EDGE $node_id$ to $current_node$ weighted $edge_weight$"
+  },
+
+  {
+    "id": "BV-11",
+    "name": "Set Current Business Value Node",
+    "description": "Set the node as the current node.",
+    "condition": "[(business_value_assessment is Complete)] ;",
+    "action": "SET current_node to $node_id$"
+  },
+
+  {
+    "id": "BV-12",
+    "name": "Move to Technical Condition Layer",
+    "description": "The Business Value assessment is complete.  Move to Technical Condition.",
+    "condition": "[(business_value_assessment is Complete)] ;",
+    "action": "SET layer to technical_condition"
+  },
+
+
+  {
+    "id": "TC-1a",
+    "name": "Set Default Technical Condition",
+    "description": "Using default logic, initialize the technical condition to Low only changing with new information.",
+    "condition": "[(layer is technical_condition)] ;",
+    "action": "SET technical_condition to Low"
+  },
+
+  {
+    "id": "TC-1b",
+    "name": "Set Default Technical Condition Score",
+    "description": "Initialize the technical condition score.",
+    "condition": "[(layer is technical_condition)] ;",
+    "action": "SET technical_condition_score to 0"
+  },
+
+  {
+    "id": "TC-2",
+    "name": "Software Technology Assessment",
+    "description": "Score the state of the software technology.",
+    "condition": "[(layer is technical_condition)] AND [(software_technology is excellent)] ;",
+    "action": "ADD 1 to technical_condition_score"
+  },
+
+  {
+    "id": "TC-3",
+    "name": "Hardware Technology Assessment",
+    "description": "Score the state of the hardware technology.",
+    "condition": "[(layer is technical_condition)] AND [(hardware_technology is good) OR (hardware_technology is excellent)]  ;",
+    "action": "ADD 1 to technical_condition_score"
+  },
+
+  {
+    "id": "TC-4",
+    "name": "User Experience Assessment",
+    "description": "Score the user experience of the application.",
+    "condition": "[(layer is technical_condition)] AND [(user_experience is positive)] ;",
+    "action": "ADD 1 to technical_condition_score"
+  },
+
+  {
+    "id": "TC-5",
+    "name": "Technical Condition Assessment",
+    "description": "Assess the technical condition based on the score.",
+    "condition": "[(layer is technical_condition)] AND [(technical_condition_score is_greater_than 2) OR [(technical_condition_score is 2) AND (software_technology is excellent)] ;",
+    "action": "SET technical_condition to High"
+  },
+
+  {
+    "id": "TC-6a",
+    "name": "Low Assessment Score Edge Weight",
+    "description": "Set the low assessment edge weighting for the technical condition layer.",
+    "condition": "[(technical_condition is Low)] ;",
+    "action": "SET edge_weight to 1"
+  },
+
+  {
+    "id": "TC-6b",
+    "name": "High Assessment Score Edge Weight",
+    "description": "Set the high assessment edge weighting for the technical condition layer.",
+    "condition": "[(technical_condition is High)] ;",
+    "action": "SET edge_weight to 3"
+  },
+
+  {
+    "id": "TC-7a",
+    "name": "Low Technical Condition Node ID",
+    "description": "Set the node ID for the low technical condition node.",
+    "condition": "[(technical_condition is Low)] ;",
+    "action": "SET node_id to $node_id$.1"
+  },
+
+  {
+    "id": "TC-7b",
+    "name": "High Technical Condition Node ID",
+    "description": "Set the node ID for the low technical condition node.",
+    "condition": "[(technical_condition is High)] ;",
+    "action": "SET node_id to $node_id$.2"
+  },
+
+  {
+    "id": "TC-8",
+    "name": "Complete Technical Condition Rule",
+    "description": "Indicate that the technical condition assessment is complete.",
+    "condition": "[(technical_condition is High)] OR [(technical_condition is Low)] ;",
+    "action": "SET technical_condition_assessment to Complete"
+  },
+
+  {
+    "id": "TC-9",
+    "name": "Add Technical Condition Node to Graph",
+    "description": "Add the application to the node for the Technical Condition assessment.  Create the node if non-existent.",
+    "condition": "[(technical_condition_assessment is Complete)] ;",
+    "action": "ADD_NODE $application$ to $node_id$ named $technical_condition$_technical_condition"
+  },
+
+  {
+    "id": "TC-10",
+    "name": "Add Technical Condition Edge to Graph",
+    "description": "Add the edge from the current node to the node for the Technical Condition assessment.  Use a weighting.",
+    "condition": "[(technical_condition_assessment is Complete)] ;",
+    "action": "ADD_EDGE $node_id$ to $current_node$ weighted $edge_weight$"
+  },
+
+  {
+    "id": "TC-11",
+    "name": "Set Current Technical Condition Node",
+    "description": "Set the node as the current node.",
+    "condition": "[(technical_condition_assessment is Complete)] ;",
+    "action": "SET current_node to $node_id$"
+  },
+
+  {
+    "id": "TC-12",
+    "name": "Move to Application Risk Layer",
+    "description": "The Technical Condition assessment is complete.  Move to Application Risk.",
+    "condition": "[(technical_condition_assessment is Complete)] ;",
+    "action": "SET layer to application_risk"
+  },
+
+
+  {
+    "id": "RI-1a",
+    "name": "Set Default Risk",
+    "description": "Using default logic, initialize the Risk to High only changing with new information.",
+    "condition": "[(layer is application_risk)] ;",
+    "action": "SET application_risk to High"
+  },
+
+  {
+    "id": "RI-1b",
+    "name": "Set Default Application Risk Score",
+    "description": "Initialize the application risk score.",
+    "condition": "[(layer is application_risk)] ;",
+    "action": "SET application_risk_score to 3"
+  },
+
+  {
+    "id": "RI-2",
+    "name": "Executive Support Assessment",
+    "description": "Score the state of executive support.",
+    "condition": "[(layer is application_risk)] AND [(executive_support is excellent)] ;",
+    "action": "SUBTRACT 1 from application_risk_score"
+  },
+
+  {
+    "id": "RI-3",
+    "name": "Resource Availability Assessment",
+    "description": "Score the state of resource availability.",
+    "condition": "[(layer is application_risk)] AND [(resource_availability is good) OR (resource_availability is excellent)] ;",
+    "action": "SUBTRACT 1 from application_risk_score"
+  },
+
+  {
+    "id": "RI-4",
+    "name": "Business Requirements Assessment",
+    "description": "Score the business requirements of the application.",
+    "condition": "[(layer is application_risk)] AND [(business_requirements is good)] ;",
+    "action": "SUBTRACT 1 from application_risk_score"
+  },
+
+  {
+    "id": "RI-5",
+    "name": "Application Risk Assessment",
+    "description": "Assess the application risk based on the score.",
+    "condition": "[(layer is application_risk)] AND [(application_risk_score is_less_than 1) OR [(application_risk_score is 1) AND (resource_availability is excellent)] ;",
+    "action": "SET application_risk to Low"
+  },
+
+  {
+    "id": "RI-6a",
+    "name": "Low Assessment Score Edge Weight",
+    "description": "Set the low assessment edge weighting for the application risk layer.",
+    "condition": "[(application_risk is Low)] ;",
+    "action": "SET edge_weight to 3"
+  },
+
+  {
+    "id": "RI-6b",
+    "name": "High Assessment Score Edge Weight",
+    "description": "Set the high assessment edge weighting for the application risk layer.",
+    "condition": "[(application_risk is High)] ;",
+    "action": "SET edge_weight to 1"
+  },
+
+  {
+    "id": "RI-7a",
+    "name": "Low Application Risk Node ID",
+    "description": "Set the node ID for the low application risk node.",
+    "condition": "[(application_risk is Low)] ;",
+    "action": "SET node_id to $node_id$.2"
+  },
+
+  {
+    "id": "RI-7b",
+    "name": "High Application Risk Node ID",
+    "description": "Set the node ID for the high application risk node.",
+    "condition": "[(application_risk is High)] ;",
+    "action": "SET node_id to $node_id$.1"
+  },
+
+  {
+    "id": "RI-8",
+    "name": "Complete Application Risk Rule",
+    "description": "Indicate that the application risk assessment is complete.",
+    "condition": "[(application_risk is High)] OR [(application_risk is Low)] ;",
+    "action": "SET application_risk_assessment to Complete"
+  },
+
+  {
+    "id": "RI-9",
+    "name": "Add Application Risk Node to Graph",
+    "description": "Add the application to the node for the application risk assessment.  Create the node if non-existent.",
+    "condition": "[(application_risk_assessment is Complete)] ;",
+    "action": "ADD_NODE $application$ to $node_id$ named $application_risk$_application_risk"
+  },
+
+  {
+    "id": "RI-10",
+    "name": "Add Application Risk Edge to Graph",
+    "description": "Add the edge from the current node to the node for the application risk assessment.  Use a weighting.",
+    "condition": "[(application_risk_assessment is Complete)] ;",
+    "action": "ADD_EDGE $node_id$ to $current_node$ weighted $edge_weight$"
+  },
+
+  {
+    "id": "RI-11",
+    "name": "Set Current Application Risk Node",
+    "description": "Set the node as the current node.",
+    "condition": "[(application_risk_assessment is Complete)] ;",
+    "action": "SET current_node to $node_id$"
+  },
+
+  {
+    "id": "RI-12",
+    "name": "Move to Application Cost Layer",
+    "description": "The Application Risk assessment is complete.  Move to Application Cost.",
+    "condition": "[(application_risk_assessment is Complete)] ;",
+    "action": "SET layer to application_cost"
+  },
+
+
+  {
+    "id": "CO-1a",
+    "name": "Set Default Cost",
+    "description": "Using default logic, initialize the Cost to High only changing with new information.",
+    "condition": "[(layer is application_cost)] ;",
+    "action": "SET application_cost to High"
+  },
+
+  {
+    "id": "CO-1b",
+    "name": "Set Default Application Cost Score",
+    "description": "Initialize the application cost score.",
+    "condition": "[(layer is application_cost)] ;",
+    "action": "SET application_cost_score to 3"
+  },
+
+  {
+    "id": "CO-2",
+    "name": "Hardware Maintenance Assessment",
+    "description": "Score the state of hardware maintenance.",
+    "condition": "[(layer is application_cost)] AND [(hardware_maintenance is low)] ;",
+    "action": "SUBTRACT 1 from application_cost_score"
+  },
+
+  {
+    "id": "CO-3",
+    "name": "Software Maintenance Assessment",
+    "description": "Score the state of software maintenance.",
+    "condition": "[(layer is application_cost)] AND [(software_maintenance is low) OR (software_maintenance is medium)] ;",
+    "action": "SUBTRACT 1 from application_cost_score"
+  },
+
+  {
+    "id": "CO-4",
+    "name": "Funding Availability Assessment",
+    "description": "Score the funding availability of the application.",
+    "condition": "[(layer is application_cost)] AND [(funding_availability is good)] ;",
+    "action": "SUBTRACT 1 from application_cost_score"
+  },
+
+  {
+    "id": "CO-5",
+    "name": "Application Cost Assessment",
+    "description": "Assess the application cost based on the score.",
+    "condition": "[(layer is application_cost)] AND [(application_cost_score is_less_than 1) OR [(application_cost_score is 2) AND (funding_availability is good)] ;",
+    "action": "SET application_cost to Low"
+  },
+
+  {
+    "id": "CO-6a",
+    "name": "Low Assessment Score Edge Weight",
+    "description": "Set the low assessment edge weighting for the application cost layer.",
+    "condition": "[(application_cost is Low)] ;",
+    "action": "SET edge_weight to 3"
+  },
+
+  {
+    "id": "CO-6b",
+    "name": "High Assessment Score Edge Weight",
+    "description": "Set the high assessment edge weighting for the application cost layer.",
+    "condition": "[(application_cost is High)] ;",
+    "action": "SET edge_weight to 1"
+  },
+
+  {
+    "id": "CO-7a",
+    "name": "Low Application Cost Node ID",
+    "description": "Set the node ID for the low application cost node.",
+    "condition": "[(application_cost is Low)] ;",
+    "action": "SET node_id to $node_id$.2"
+  },
+
+  {
+    "id": "CO-7b",
+    "name": "High Application Cost Node ID",
+    "description": "Set the node ID for the high application cost node.",
+    "condition": "[(application_cost is High)] ;",
+    "action": "SET node_id to $node_id$.1"
+  },
+
+  {
+    "id": "CO-8",
+    "name": "Complete Application Cost Rule",
+    "description": "Indicate that the application cost assessment is complete.",
+    "condition": "[(application_cost is High)] OR [(application_cost is Low)] ;",
+    "action": "SET application_cost_assessment to Complete"
+  },
+
+  {
+    "id": "CO-9",
+    "name": "Add Application Cost Node to Graph",
+    "description": "Add the application to the node for the application cost assessment.  Create the node if non-existent.",
+    "condition": "[(application_cost_assessment is Complete)] ;",
+    "action": "ADD_NODE $application$ to $node_id$ named $application_cost$_application_cost"
+  },
+
+  {
+    "id": "CO-10",
+    "name": "Add Technical Condition Edge to Graph",
+    "description": "Add the edge from the current node to the node for the application risk assessment.  Use a weighting.",
+    "condition": "[(application_cost_assessment is Complete)] ;",
+    "action": "ADD_EDGE $node_id$ to $current_node$ weighted $edge_weight$"
+  },
+
+  {
+    "id": "CO-11",
+    "name": "Set Current Application Risk Node",
+    "description": "Set the Start node as the current node.",
+    "condition": "[(application_cost_assessment is Complete)] ;",
+    "action": "SET current_node to $node_id$"
+  },
+
+  {
+    "id": "CO-12",
+    "name": "Move to the Modernization Layer",
+    "description": "The Application Cost assessment is complete.  Move to the Modernization Layer.",
+    "condition": "[(application_cost_assessment is Complete)] ;",
+    "action": "SET layer to modernization"
+  },
+
+  {
+    "id": "MO-1a",
+    "name": "Set Default Modernization",
+    "description": "Using default logic, initialize the modernization to Low only changing with new information.",
+    "condition": "[(layer is modernization)] ;",
+    "action": "SET modernization to Low"
+  },
+
+  {
+    "id": "MO-1b",
+    "name": "Set Default Modernization Score",
+    "description": "Initialize the modernization score.",
+    "condition": "[(layer is modernization)] ;",
+    "action": "SET modernization_score to 0"
+  },
+
+  {
+    "id": "MO-2",
+    "name": "Application Age Assessment",
+    "description": "Score the state of the application's age'.",
+    "condition": "[(layer is modernization)] AND [(application_age is_less_than 5)] ;",
+    "action": "ADD 1 to modernization_score"
+  },
+
+  {
+    "id": "MO-3",
+    "name": "Modern Architecture Assessment",
+    "description": "Score the state of the architecture.",
+    "condition": "[(layer is modernization)] AND [(architecture is good) OR (architecture is excellent)]  ;",
+    "action": "ADD 1 to modernization_score"
+  },
+
+  {
+    "id": "MO-4",
+    "name": "Cloud Readiness Assessment",
+    "description": "Score the cloud readiness of the application.",
+    "condition": "[(layer is modernization)] AND [(cloud_readiness is ready)] ;",
+    "action": "ADD 1 to modernization_score"
+  },
+
+  {
+    "id": "MO-5",
+    "name": "Modernization Assessment",
+    "description": "Assess the modernization based on the score.",
+    "condition": "[(layer is modernization)] AND [(modernization_score is_greater_than 2) OR [(modernization_score is 2) AND (architecture is excellent)] ;",
+    "action": "SET modernization to High"
+  },
+
+  {
+    "id": "MO-6a",
+    "name": "Low Assessment Score Edge Weight",
+    "description": "Set the low assessment edge weighting for the modernization layer.",
+    "condition": "[(modernization is Low)] ;",
+    "action": "SET edge_weight to 1"
+  },
+
+  {
+    "id": "MO-6b",
+    "name": "High Assessment Score Edge Weight",
+    "description": "Set the high assessment edge weighting for the modernization layer.",
+    "condition": "[(modernization is High)] ;",
+    "action": "SET edge_weight to 3"
+  },
+
+  {
+    "id": "MO-7a",
+    "name": "Low Modernization Node ID",
+    "description": "Set the node ID for the low modernization node.",
+    "condition": "[(modernization is Low)] ;",
+    "action": "SET node_id to $node_id$.1"
+  },
+
+  {
+    "id": "MO-7b",
+    "name": "High Modernization Node ID",
+    "description": "Set the node ID for the low modernization node.",
+    "condition": "[(modernization is High)] ;",
+    "action": "SET node_id to $node_id$.2"
+  },
+
+  {
+    "id": "MO-8",
+    "name": "Complete Modernization Rule",
+    "description": "Indicate that the modernization assessment is complete.",
+    "condition": "[(modernization is High)] OR [(modernization is Low)] ;",
+    "action": "SET modernization_assessment to Complete"
+  },
+
+  {
+    "id": "MO-9",
+    "name": "Add Modernization Node to Graph",
+    "description": "Add the application to the node for the Modernization assessment.  Create the node if non-existent.",
+    "condition": "[(modernization_assessment is Complete)] ;",
+    "action": "ADD_NODE $application$ to $node_id$ named $modernization$_modernization"
+  },
+
+  {
+    "id": "MO-10",
+    "name": "Add Modernization Edge to Graph",
+    "description": "Add the edge from the current node to the node for the Modernization assessment.  Use a weighting.",
+    "condition": "[(modernization_assessment is Complete)] ;",
+    "action": "ADD_EDGE $node_id$ to $current_node$ weighted $edge_weight$"
+  },
+
+  {
+    "id": "MO-11",
+    "name": "Set Current Modernization Node",
+    "description": "Set the Start node as the current node.",
+    "condition": "[(modernization_assessment is Complete)] ;",
+    "action": "SET current_node to Start"
+  },
+
+  {
+    "id": "MO-12",
+    "name": "Move Back to Business Layer",
+    "description": "The Modernization assessment is complete.  Move back to the Business Layer.",
+    "condition": "[(modernization_assessment is Complete)] ;",
+    "action": "SET layer to business_value"
+  }
 
 ]
 

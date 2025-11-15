@@ -15,6 +15,8 @@ def main():
     my_agent = AgentC()
     my_environment = EnvironmentC("APM", "my_data_file.xlsx", "apm_rules.json")
 
+    # This should just be 'create the graph'.
+
     planner_controller = PlannerControllerC(my_agent, my_environment)
 
     planner_controller.start_planning_session()

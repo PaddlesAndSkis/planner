@@ -87,7 +87,9 @@ class PlannerControllerC:
 
                     if Global._debug: print ("*********************data_dictionary is now:", data_dictionary)
 
-        # Lastly (for now), print out the graph.
+        # Move these to the PerceptionC class (need to pass in the planner_knowledge_graph) so that queries
+        # can be made on the data.
+
 
         planner_knowledge_graph.print_node_applications("1.1.1.1")
         planner_knowledge_graph.print_leaf_nodes()
@@ -96,17 +98,28 @@ class PlannerControllerC:
         planner_knowledge_graph.print()
         planner_knowledge_graph.print_shortest_path()
         planner_knowledge_graph.print_longest_path()
+
+        print("If you know the name of the node, you can iterate through all the nodes and get the name:")
+        planner_knowledge_graph.search_graph_by_name("Low_business_value")
+        planner_knowledge_graph.search_graph_by_name("Low_technical_condition")
+
+        print("If you want to get all the edges in a breadth first search:")
+        planner_knowledge_graph.breadth_first_search('Start')
+
+        print("If you want to know which nodes have low business value, high technical condition, you must BFS:")
+        planner_knowledge_graph.search_graph_by_names('Low_business_value', 'Low_technical_condition')
         
+        print("If you want to know which nodes have high application risk, low modernization, you must BFS:")
+        planner_knowledge_graph.search_graph_by_names('High_application_risk', 'Low_modernization')
+
+
+    # resolveVariables
 
     def resolveVariables(self, stringLine, dataDictionary):     
 
-        # into its tokens.
+        # Split the string line into its tokens based on the regex expression.
 
-     #   tempStringArray = re.split(r"/(\w*\$\w+\$)/", stringLine)
-       # tempStringArray = re.split(r"(\w+\$)", stringLine)
         tempStringArray = re.split(r'(\$.*?\$)', stringLine)
-       # tempStringArray = re.findall(r"(\w+\$)", stringLine, flags=0)
-        #self.tempExpression = re.split(r"([\!\[\]\(\)])", booleanExpression)
 
         print ("stringLine = ", stringLine)
         print ("tempStringArray = ", tempStringArray)
@@ -119,18 +132,11 @@ class PlannerControllerC:
 
             # Check to see if the token is a variable (e.g., $var$).
 
-            if Global._debug: print ("HERE...", token)
-
-            #if (token.match(/\w*\$\w+\$/))
-
             if (re.search(r"(\$.*?\$)", token)):
-
-                if Global._debug: print ("THERE")
 
                 # Variable is present - remove the $ delimiters.
 
                 token = token[1:len(token)-1]
-                if Global._debug: print ("THERE", token)
 
                 # Look up the data value for this variable in the 
                 # data dictionary Hashtable and set that as the new token
@@ -153,23 +159,4 @@ class PlannerControllerC:
 
     
         
-
-    #    condition = "[(cam is 55) AND (home is Westboro)] OR [(cam is 60) AND (city is Ottawa)] ;"
-        
-        
-        # Add the data dictionary to the Agent.
-
-     #   dataDictionary = {"CAM" : "55", "HOME" : "Westboro", "CITY" : "Ottawa"}
-
-    #    self.agent.add_to_data_dictionary(dataDictionary)
-
-    #    plannerBooleanExpressionEvaluator = PlannerBooleanExpressionEvaluatorC(condition, dataDictionary)
-   #     conditionBooleanResult = plannerBooleanExpressionEvaluator.evaluateBooleanExpression()
-
-
-    #    print ("The final result is: ", conditionBooleanResult)
-
-
-
-
 
