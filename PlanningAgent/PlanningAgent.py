@@ -19,7 +19,8 @@ def main():
 
     planner_controller = PlannerControllerC(my_agent, my_environment)
 
-    planner_controller.start_planning_session()
+   # planner_controller.start_planning_session()
+    planner_controller.start_agent()
    
     print ("Agent Planning Session complete.")
 

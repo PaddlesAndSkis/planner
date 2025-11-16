@@ -22,8 +22,16 @@ class PlannerControllerC:
         self.environment = environment
 
 
-    def start_planning_session(self):
+    def start_agent(self):
 
+        # Start the Agent and tell it what environment it is operating in.
+
+        self.agent.start_planning_session(self.environment)
+
+
+    # REMOVE THE FOLLOWING - TRANSFERRED TO AGENT
+
+    def backup(self):
         # Loop of prompts:
         # 1. Query for shortest path
         # 2. Query for longest path
@@ -91,8 +99,8 @@ class PlannerControllerC:
         # can be made on the data.
 
 
-        planner_knowledge_graph.print_node_applications("1.1.1.1")
-        planner_knowledge_graph.print_leaf_nodes()
+        planner_knowledge_graph.print_node_applications("1.1.1.1", "application")
+        planner_knowledge_graph.print_leaf_nodes("application")
         planner_knowledge_graph.add_end_node()
         
         planner_knowledge_graph.print()
@@ -102,6 +110,9 @@ class PlannerControllerC:
         print("If you know the name of the node, you can iterate through all the nodes and get the name:")
         planner_knowledge_graph.search_graph_by_name("Low_business_value")
         planner_knowledge_graph.search_graph_by_name("Low_technical_condition")
+
+        print("If you want to know which nodes have Low_business_value, Low_technical_condition, you must BFS:")
+        planner_knowledge_graph.search_graph_by_names('Low_business_value', 'Low_technical_condition')
 
         print("If you want to get all the edges in a breadth first search:")
         planner_knowledge_graph.breadth_first_search('Start')

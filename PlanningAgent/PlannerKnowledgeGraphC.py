@@ -17,18 +17,24 @@ class PlannerKnowledgeGraphC:
         self.G.add_node("Start", node="Start", application="n/a")
 
 
-    def add_node(self, node_id, node_name, application):
+    def add_node(self, node_id, node_name, attribute_name, attribute_value):
 
-        # "ADD_NODE <application> to <node_id> named <node_name>"
-        applications = []
+        # "ADD_NODE <attribute_name> <attribute_value> to <node_id> named <node_name>"
+
+        attribute_list = [] 
         
+        print ("attribute_list  = ", attribute_list)
+        print ("attribute_name  = ", attribute_name)
+        print ("attribute_value = ", attribute_value)
         if (self.G.has_node(node_id)):
 
-            applications = self.G.nodes[node_id]["application"]
+            attribute_list = list(self.G.nodes[node_id][attribute_name])
+            print ("aaaattribute_list  = ", attribute_list)
         
-        applications.append(application)
+        attribute_list.append(attribute_value)
 
-        self.G.add_node(node_id, node=node_id, name=node_name, application=applications)
+        self.G.add_node(node_id, node=node_id, name=node_name)
+        self.G.nodes[node_id][attribute_name] = attribute_list
 
 
     def add_edge(self, current_node, dest_node, weight):
@@ -45,18 +51,18 @@ class PlannerKnowledgeGraphC:
             
             self.add_edge(leaf_node, "End", 0)
 
-    def print_node_applications(self, node_id):
+    def print_node_applications(self, node_id, attribute_name):
 
-        print ("Node ", node_id, "is named", self.G.nodes[node_id]["name"], "and contains applications:", self.G.nodes[node_id]['application'])
+        print ("Node ", node_id, "is named", self.G.nodes[node_id]["name"], "and contains attributes:", self.G.nodes[node_id][attribute_name])
 
-    def print_leaf_nodes(self):
+    def print_leaf_nodes(self, attribute_name):
 
         leaf_nodes = [node for node in self.G.nodes() if self.G.out_degree(node) == 0]
 
         print ("leaf nodes:", leaf_nodes)
 
         for leaf_node in leaf_nodes:
-            self.print_node_applications(leaf_node)
+            self.print_node_applications(leaf_node, attribute_name)
 
 
     def print_shortest_path(self):

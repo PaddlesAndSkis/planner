@@ -44,7 +44,7 @@
     "id": "BV-5",
     "name": "Business Value Assessment",
     "description": "Assess the business value based on the score.",
-    "condition": "[(layer is business_value)] AND [(business_value_score is_greater_than 2) OR [(business_value_score is 2) AND (business_criticality is critical)] ;",
+    "condition": "[(layer is business_value)] AND [(business_value_score is_greater_than 1) OR [(business_value_score is 2) AND (business_criticality is critical)] ;",
     "action": "SET business_value to High"
   },
 
@@ -75,7 +75,7 @@
   {
     "id": "BV-7b",
     "name": "High Business Value Node ID",
-    "description": "Set the node ID for the low business value node.",
+    "description": "Set the node ID for the high business value node.",
     "condition": "[(business_value is High)] ;",
     "action": "SET node_id to 2"
   },
@@ -93,7 +93,7 @@
     "name": "Add Business Value Node to Graph",
     "description": "Add the application to the node for the Business Value assessment.  Create the node if non-existent.",
     "condition": "[(business_value_assessment is Complete)] ;",
-    "action": "ADD_NODE $application$ to $node_id$ named $business_value$_business_value"
+    "action": "ADD_NODE application $application$ to $node_id$ named $business_value$_business_value"
   },
 
   {
@@ -214,7 +214,7 @@
     "name": "Add Technical Condition Node to Graph",
     "description": "Add the application to the node for the Technical Condition assessment.  Create the node if non-existent.",
     "condition": "[(technical_condition_assessment is Complete)] ;",
-    "action": "ADD_NODE $application$ to $node_id$ named $technical_condition$_technical_condition"
+    "action": "ADD_NODE application $application$ to $node_id$ named $technical_condition$_technical_condition"
   },
 
   {
@@ -335,7 +335,7 @@
     "name": "Add Application Risk Node to Graph",
     "description": "Add the application to the node for the application risk assessment.  Create the node if non-existent.",
     "condition": "[(application_risk_assessment is Complete)] ;",
-    "action": "ADD_NODE $application$ to $node_id$ named $application_risk$_application_risk"
+    "action": "ADD_NODE application $application$ to $node_id$ named $application_risk$_application_risk"
   },
 
   {
@@ -456,7 +456,7 @@
     "name": "Add Application Cost Node to Graph",
     "description": "Add the application to the node for the application cost assessment.  Create the node if non-existent.",
     "condition": "[(application_cost_assessment is Complete)] ;",
-    "action": "ADD_NODE $application$ to $node_id$ named $application_cost$_application_cost"
+    "action": "ADD_NODE application $application$ to $node_id$ named $application_cost$_application_cost"
   },
 
   {
@@ -576,7 +576,7 @@
     "name": "Add Modernization Node to Graph",
     "description": "Add the application to the node for the Modernization assessment.  Create the node if non-existent.",
     "condition": "[(modernization_assessment is Complete)] ;",
-    "action": "ADD_NODE $application$ to $node_id$ named $modernization$_modernization"
+    "action": "ADD_NODE application $application$ to $node_id$ named $modernization$_modernization"
   },
 
   {
