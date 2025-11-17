@@ -1,4 +1,3 @@
-
 # PlanningAgent
 
 # Import Project classes.
@@ -7,20 +6,26 @@ from AgentC import AgentC
 from EnvironmentC import EnvironmentC
 from PlannerControllerC import PlannerControllerC
 
+# main - Application Main Driver
 
 def main():
 
     print ("Starting the Agent Planning Session")
 
-    my_agent = AgentC()
-    my_environment = EnvironmentC("APM", "my_data_file.xlsx", "apm_rules.json")
+    # Create the Agent and Environment.
 
-    # This should just be 'create the graph'.
+    agent = AgentC()
+    environment = EnvironmentC("APM", "my_data_file.xlsx", "Planner_Rules.json")
 
-    planner_controller = PlannerControllerC(my_agent, my_environment)
+    # Setup the Planner Controller with the Agent and Environment.
 
-   # planner_controller.start_planning_session()
+    planner_controller = PlannerControllerC(agent, environment)
+
+    # Start the Agent.
+
     planner_controller.start_agent()
+
+    # At this point, the Agent Planning session is complete.
    
     print ("Agent Planning Session complete.")
 

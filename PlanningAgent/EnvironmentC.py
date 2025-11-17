@@ -4,15 +4,60 @@ import random
                                                                                                                                                                                                         
 class EnvironmentC:
     
-    # Everything external to the Agent
-
+    # Constructor.
 
     def __init__(self, environment_name, data_file, rules_file):
         
+        # Set the environment attributes - everything external to the Agent
+
         self.environment_name = environment_name
         self.data_file        = data_file
         self.rules_file       = rules_file
 
+
+    # get_environment_name
+
+    def get_environment_name(self) -> str:
+        
+        return self.environment_name
+
+
+    # set_environment_name
+
+    def set_environment_name(self, environment_name):
+
+        self.environment_name = environment_name
+
+
+    # get_data_file
+
+    def get_data_file(self) -> str:
+
+        return data_file
+
+
+    # set_data_file
+
+    def set_data_file(self, data_file):
+
+        self.data_file = data_file
+
+
+    # get_rules_file
+
+    def get_rules_file(self) -> str:
+
+        return self.rules_file
+
+
+    # set_rules_file
+
+    def set_rules_file(self, rules_file):
+
+        self.rules_file = rules_file
+
+
+    # load_data
 
     def load_data(self) -> []:
         
@@ -109,11 +154,6 @@ class EnvironmentC:
             data_list.append(data_dict)
 
         return data_list
-
-
-    def display_output(self):
-
-        pass
 
 
 

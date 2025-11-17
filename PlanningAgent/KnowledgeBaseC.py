@@ -1,55 +1,94 @@
 # KnowledgeBaseC
 
+# Import classes.
+
 import json
+
+# Import Project classes.
+
+from PlannerKnowledgeGraphC import PlannerKnowledgeGraphC
+
 
 class KnowledgeBaseC:
     
-    def __init__(self):
+    def __init__(self, environment):
+
+        # Set the Knowledge Base attributes.
+
+        self.environment = environment
+
         self.data_dictionary = {}
         self.rules = []  # [] of {}
+        self.knowledge_graph = None
 
         self.__load_data_dictionary()
-  #      self.__load_rules()
+
+        #  For inline rules:    self.__load_rules()
+
+        # Load the rules from the JSON rules file.
 
         self.__load_rules_from_json()
 
+
+    # get_data_dictionary
 
     def get_data_dictionary(self) -> {}:
 
         return self.data_dictionary
 
 
+    # set_data_dictionary
+
     def set_data_dictionary(self, data_dictionary):
 
         self.data_dictionary = data_dictionary
 
 
+    # get_rules
+
     def get_rules(self) -> []:
         return self.rules
+
+
+    # set_rules
 
     def set_rules(self, rules):
         self.rules = rules
 
 
+    # get_knowledge_graph
+
+    def get_knowledge_graph(self):
+
+        return self.knowledge_graph
+
+
+    # set_knowledge_graph
+
+    def set_knowledge_graph(self, knowledge_graph):
+
+        self.knowledge_graph = knowledge_graph
+
+
     # Private methods.
 
+    # __load_data_dictionary
+
     def __load_data_dictionary(self):
+        
+        # Load the initial data set.  Currently, it is to initialize the layer and the
+        # current node.
 
         self.data_dictionary = { "LAYER" : "business_value", "CURRENT_NODE" : "Start" }
 
-     #   application = "App1"
-     #   current_effectiveness = "good"
-     #   operating_system = "good"
 
-     #   self.data_dictionary.update({ "APPLICATION" : application, "CURRENT_EFFECTIVENESS" : current_effectiveness,
-      #                                "OPERATING_SYSTEM" : "okay",
-      #                                "CURRENT_NODE" : "Start"})
+    # __load_rules_from_json
 
     def __load_rules_from_json(self):
 
-        # Open the JSON file in read mode.
+        # Open the JSON file specified in the Environment in read mode.
 
-        with open('Planner_Rules.json', 'r') as f:
+        with open(self.environment.get_rules_file(), 'r') as f:
 
             # Load the JSON data into a Python dictionary
             rules = json.load(f)
