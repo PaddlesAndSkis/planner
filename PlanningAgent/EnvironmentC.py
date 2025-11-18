@@ -57,6 +57,18 @@ class EnvironmentC:
         self.rules_file = rules_file
 
 
+    # get_environment_input
+
+    def get_environment_input(self) -> []:
+
+        # This input can be from the user / environment either entered through an interface
+        # or a file.  For now, just hardcode it.
+
+        input_from_env = [ 'shortest_path', 'longest_path', 'retire', 'replace', 'rebuild']
+
+        return input_from_env
+
+
     # load_data
 
     def load_data(self) -> []:
@@ -81,7 +93,7 @@ class EnvironmentC:
 
         data_list = []
 
-        for i in range(30):
+        for i in range(5):
 
             app_name = "App" + str(i)
 

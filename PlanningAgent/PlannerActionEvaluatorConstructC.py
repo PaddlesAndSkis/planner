@@ -9,6 +9,7 @@ from PlannerAddNodeActionConstructC import PlannerAddNodeActionConstructC
 from PlannerAddEdgeActionConstructC import PlannerAddEdgeActionConstructC
 from PlannerSetActionConstructC import PlannerSetActionConstructC
 from PlannerSubtractActionConstructC import PlannerSubtractActionConstructC
+from PlannerDisplayNodeActionConstructC import PlannerDisplayNodeActionConstructC
 
 import Global
 
@@ -29,6 +30,7 @@ class PlannerActionEvaluatorConstructC:
         self.actionConstructLibrary["ADD_EDGE"]        = PlannerAddEdgeActionConstructC()
         self.actionConstructLibrary["SET"]             = PlannerSetActionConstructC()
         self.actionConstructLibrary["SUBTRACT"]        = PlannerSubtractActionConstructC()
+        self.actionConstructLibrary["DISPLAY_NODE"]    = PlannerDisplayNodeActionConstructC()
 
 
     # invokeAction
