@@ -134,3 +134,51 @@ class PlannerKnowledgeGraphC:
 
         print ("Both Matched_nodes_list = ", both_matched_nodes_list)
 
+        print ("The applications that")
+
+
+#    node_list = [ 'Low_business_value', 'High_technical_condition', 'Low_application_risk']
+#    matched_nodes_list = []
+    def search_graph_by_multi_names(self, node_list, matched_nodes_list) -> []:
+
+        print ("MULTI node_list", node_list)
+        print ("MULTI matched_nodes_list", matched_nodes_list)
+
+        if (len(node_list) > 0):
+            node_to_match = node_list.pop()
+            print ("MULTI node_to_match", node_to_match)
+        else:
+            return matched_nodes_list
+
+        graph_edges = self.breadth_first_search('Start')
+
+        for u, v in graph_edges:
+
+            print ("v = ", v)
+            if (self.G.nodes[v].get("name") == node_to_match):
+
+           #     if (v not in matched_nodes_list):
+                matched_nodes_list.append(v)
+
+        # matched_nodes_list = ['1', '1.2']
+
+        print ("MULTI now matched_nodes_list", matched_nodes_list)
+
+     #   for matched_node in matched_nodes_list:
+
+     #       print ("MULTI now node_list", node_list)
+      #      print ("MULTI now matched_nodes_list", matched_nodes_list)
+
+        return self.search_graph_by_multi_names(node_list, matched_nodes_list)
+
+
+    def find_path_through_graph(self, node_list):
+
+        for source_node in node_list:
+
+            for target_node in node_list:
+
+                if (source_node != target_node):
+
+                    path_exists = nx.has_path(self.G, source=source_node, target=target_node)
+                    print(f"Path exists between {source_node} and {target_node}: {path_exists}")
