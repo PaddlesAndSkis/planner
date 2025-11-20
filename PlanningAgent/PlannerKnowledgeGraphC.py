@@ -17,6 +17,8 @@ class PlannerKnowledgeGraphC:
         self.G.add_node("Start", node="Start", application="n/a")
 
 
+    # add_node
+
     def add_node(self, node_id, node_name, attribute_name, attribute_value):
 
         # "ADD_NODE <attribute_name> <attribute_value> to <node_id> named <node_name>"
@@ -26,34 +28,62 @@ class PlannerKnowledgeGraphC:
         print ("attribute_list  = ", attribute_list)
         print ("attribute_name  = ", attribute_name)
         print ("attribute_value = ", attribute_value)
+
+        # Check to see if a node with this node_id already exists in the graph.
+
         if (self.G.has_node(node_id)):
 
+            # This node already exists.  Therefore, get the node's attribute specified
+            # by the attribute name.
+
             attribute_list = list(self.G.nodes[node_id][attribute_name])
-            print ("aaaattribute_list  = ", attribute_list)
+            if Global._debug: print ("Node", node_id, " ", attribute_name, "is:", attribute_list)
         
+        # Append the new attribute value to the attribute list.
+
         attribute_list.append(attribute_value)
+
+        # Add the node and its attribute list.
 
         self.G.add_node(node_id, node=node_id, name=node_name)
         self.G.nodes[node_id][attribute_name] = attribute_list
 
 
+    # add_edge
+
     def add_edge(self, current_node, dest_node, weight):
+        
+        # Add an edge between the source node and destination node.
+        # Add the weight.
 
         # "ADD_EDGE $dest_node$ to $current_node$ weighted $weight$
 
         self.G.add_edge(current_node, dest_node, weight=int(weight))
 
+    
+    # add_end_node
+
     def add_end_node(self):
 
+        # Get all of the leaf nodes in the graph.
+
         leaf_nodes = [node for node in self.G.nodes() if self.G.out_degree(node) == 0]
+
+        # Iterate through the leaf nodes and add an edge to the End node.
 
         for leaf_node in leaf_nodes:
             
             self.add_edge(leaf_node, "End", 0)
 
+    
+    # print_node_applications
+
     def print_node_applications(self, node_id, attribute_name):
 
+        # Print out the node's attribute values give the node ID and attribute name.
+
         print ("Node ", node_id, "is named", self.G.nodes[node_id]["name"], "and contains attributes:", self.G.nodes[node_id][attribute_name])
+
 
     def print_leaf_nodes(self, attribute_name):
 

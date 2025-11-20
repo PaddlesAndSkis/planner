@@ -45,8 +45,23 @@ class AgentC:
         kb = self.__build_knowledge_graph(kb, rules_engine)
 
         # Invoke the plans retrieved from the environment.
+        # Note that the Perception module can be called to get a Plan input.
 
-        self.invoke_plans(plan_inputs, kb, rules_engine)
+      #  self.invoke_plans(plan_inputs, kb, rules_engine)
+
+        plan = ""
+
+        while (plan != "quit"):
+            
+            plan_list = []
+            plan = perception.get_plan_from_user()
+
+            print ("Selected plan:", plan)
+
+            if (plan != "quit"):
+                plan_list.append(plan)
+                self.invoke_plans(plan_list, kb, rules_engine)
+
 
 
     # Private methods.
