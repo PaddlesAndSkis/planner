@@ -640,7 +640,7 @@
     "name": "Identify Applications to Rebuild",
     "description": "Applications that are high business value, low technical condition and low modernization.",
     "condition": "[(planning is in_progress) AND (plan is rebuild)] ;",
-    "action": "DISPLAY_NODE application on node High_business_value+Low_technical_condition+Low_modernization"
+    "action": "DISPLAY_NODE application on node Low_modernization+High_business_value+Low_technical_condition+High_application_risk"
   }
 
 

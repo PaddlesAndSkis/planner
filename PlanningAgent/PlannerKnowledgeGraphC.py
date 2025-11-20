@@ -139,18 +139,27 @@ class PlannerKnowledgeGraphC:
 
 #    node_list = [ 'Low_business_value', 'High_technical_condition', 'Low_application_risk']
 #    matched_nodes_list = []
-    def search_graph_by_multi_names(self, node_list, matched_nodes_list) -> []:
 
-        print ("MULTI node_list", node_list)
+    def search_graph_by_multi_names(self, name_list, matched_nodes_list) -> []:
+
+        print ("MULTI name_list", name_list)
         print ("MULTI matched_nodes_list", matched_nodes_list)
 
-        if (len(node_list) > 0):
-            node_to_match = node_list.pop()
+        if (len(name_list) > 0):
+            node_to_match = name_list.pop()
             print ("MULTI node_to_match", node_to_match)
         else:
+            # Return the matched_nodes_list.
+
             return matched_nodes_list
 
+        # Do a breadth first search to get the list of nodes that match the node to match as
+        # especially in the lower layers there can be multiple nodes.
+        # (e.g., High_modernization)
+
         graph_edges = self.breadth_first_search('Start')
+
+        matched_names_list = []
 
         for u, v in graph_edges:
 
@@ -158,18 +167,70 @@ class PlannerKnowledgeGraphC:
             if (self.G.nodes[v].get("name") == node_to_match):
 
            #     if (v not in matched_nodes_list):
-                matched_nodes_list.append(v)
+                matched_names_list.append(v)
 
         # matched_nodes_list = ['1', '1.2']
 
-        print ("MULTI now matched_nodes_list", matched_nodes_list)
+        print ("MULTI List of nodes that match", node_to_match, "are", matched_names_list)
 
-     #   for matched_node in matched_nodes_list:
+        # If there are no matched names then the matched names list will be empty as the
+        # matched names is a logical AND.
+
+        if (len(matched_names_list) == 0):
+        
+            name_list.clear()
+
+            return []
+
+        # Iterate through the list of matched nodes to see if there is a path between it and
+        # the current set.
+
+        new_matched_nodes_list = []
+
+        if (len(matched_nodes_list) == 0):
+
+           # matched_nodes_list = matched_names_list
+            new_matched_nodes_list = matched_names_list
+
+        else:
+
+            # Iterate through the matched names and matched nodes list to determine if there
+            # is a path between the two nodes.  Account for direction (e.g., node 2.1.1 is further down
+            # the tree than node 2.1).  Using a transitive relation: if there exists a path between
+            # A -> B and there is a path between B -> C, then there is a path between A -> B -> C
+
+            for source_node in matched_names_list:
+
+                for target_node in matched_nodes_list:
+
+                    if (source_node != target_node):
+
+                        if (len(source_node) < len(target_node)):
+
+                            path_exists = nx.has_path(self.G, source=source_node, target=target_node)
+                            print(f"Path exists between {source_node} and {target_node}: {path_exists}")
+                            
+                            if (path_exists):
+
+                                new_matched_nodes_list.append(target_node)
+
+                        else:
+
+                            path_exists = nx.has_path(self.G, source=target_node, target=source_node)
+                            print(f"Path exists between {target_node} and {source_node}: {path_exists}")
+
+                            if (path_exists):
+
+                                new_matched_nodes_list.append(source_node)
+
+        matched_nodes_list = new_matched_nodes_list
 
      #       print ("MULTI now node_list", node_list)
       #      print ("MULTI now matched_nodes_list", matched_nodes_list)
 
-        return self.search_graph_by_multi_names(node_list, matched_nodes_list)
+        print ("MULTI END matched_nodes_list", matched_nodes_list)
+
+        return self.search_graph_by_multi_names(name_list, matched_nodes_list)
 
 
     def find_path_through_graph(self, node_list):

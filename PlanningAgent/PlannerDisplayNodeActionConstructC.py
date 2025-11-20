@@ -90,7 +90,10 @@ class PlannerDisplayNodeActionConstructC(PlannerGraphActionConstructA):
         print ("Final nodes list = ", final_nodes_list)
         print ("Final nodes list sorted = ", sorted(final_nodes_list))
 
-        plannerKnowledgeGraph.find_path_through_graph(final_nodes_list)
+        for final_node in final_nodes_list:
+            plannerKnowledgeGraph.print_node_applications(final_node, "application")
+
+      #  plannerKnowledgeGraph.find_path_through_graph(final_nodes_list)
 
        # plannerKnowledgeGraph.search_graph_by_names(search_criteria_tokens[0], search_criteria_tokens[1])
 
