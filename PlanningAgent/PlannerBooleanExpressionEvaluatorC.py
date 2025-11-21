@@ -2,8 +2,6 @@
 #
 # Concrete class for evaluating boolean expressions.
 
-# Import libraries.
-
 # Import Project classes.
 
 import Global
@@ -35,42 +33,56 @@ class PlannerBooleanExpressionEvaluatorC(BooleanExpressionEvaluatorA):
         self.conditionConstructLibrary["IS_GREATER_THAN"] = PlannerIsGreaterThanConditionConstructC()
         self.conditionConstructLibrary["IS_LESS_THAN"]    = PlannerIsLessThanConditionConstructC()
 
- #       self.conditionConstructLibrary["CONTAINS"] = PlanterboxContainsConditionConstructC.new
- 
-
 
     # evaluateConstruct
     #
     # Abstract method that is overridden by this concrete subclass.
 
-    def evaluateConstruct(self):
+    def evaluateConstruct(self) -> bool:
 
-        # api is finance     cam is_not here
+        try:
 
-        if Global._debug: print("LeftOperand =", self.leftOperand)
+            if Global._debug: print("LeftOperand =", self.leftOperand)
 
-        constructComponents = self.leftOperand.split(" ", 3)
+            # Split the token (leftOperand) into three parts: <subject> <verb> <predicate>
 
-        print ("Construct components = ", constructComponents)
+            constructComponents = self.leftOperand.split(" ", 3)
 
-        subjectComponent = constructComponents[0].replace("(", "") 
-        subjectComponent = subjectComponent.replace(")", "").strip() 
+            if Global._debug: print ("Construct components = ", constructComponents)
+
+            # Clean the subject component.
+
+            subjectComponent = constructComponents[0].replace("(", "") 
+            subjectComponent = subjectComponent.replace(")", "").strip() 
       
-        verbComponent = constructComponents[1].upper().replace("(", "")
-        verbComponent = verbComponent.replace(")", "").strip() 
+            # Clean the verb component.
 
-        predicateComponent = constructComponents[2].replace("(", "")
-        predicateComponent = predicateComponent.replace(")", "").strip()
+            verbComponent = constructComponents[1].upper().replace("(", "")
+            verbComponent = verbComponent.replace(")", "").strip() 
 
-        if Global._debug: print("subject:", subjectComponent)
-        if Global._debug: print("verb:", verbComponent)
-        if Global._debug: print("predicate:", predicateComponent)
+            # Clean the predicate component.
 
-        conditionHash = {}
-        conditionHash["keyword"] = subjectComponent
-        conditionHash["value"]   = predicateComponent
+            predicateComponent = constructComponents[2].replace("(", "")
+            predicateComponent = predicateComponent.replace(")", "").strip()
 
-        print ("AM I HERE>>>>", conditionHash)
+            if Global._debug: print("subject:", subjectComponent)
+            if Global._debug: print("verb:", verbComponent)
+            if Global._debug: print("predicate:", predicateComponent)
 
-        return self.conditionConstructLibrary[verbComponent].evaluate(self.dataDictionary, conditionHash)
+            # Create a dictionary consisting of a keyword-value pair with the
+            # subject and predicate components.
 
+            conditionHash = {}
+            conditionHash["keyword"] = subjectComponent
+            conditionHash["value"]   = predicateComponent
+
+            # Return the boolean result (True or False) based on the evaluation of the condition.
+
+            return self.conditionConstructLibrary[verbComponent].evaluate(self.dataDictionary, conditionHash)
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("PlannerBooleanExpressionEvaluatorC Exception:", e)
+            raise e

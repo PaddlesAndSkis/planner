@@ -27,66 +27,82 @@ class BooleanExpressionEvaluatorA(ABC):
 
     def __init__(self, booleanExpression, dataDictionary):
     
-        self.booleanExpression = []
+        try:
 
-        print ("boolean expression: ", booleanExpression)
+            self.booleanExpression = []
 
-        # Split the boolean expression based the language constructs.
+            if Global._debug: print ("boolean expression: ", booleanExpression)
 
-        self.tempExpression = re.split(r"([\!\[\]\(\)])", booleanExpression)
+            # Split the boolean expression based the language constructs.
 
+            self.tempExpression = re.split(r"([\!\[\]\(\)])", booleanExpression)
 
-        #self.tempExpression = booleanExpression.split(/(?<=[\!\[\]\)])/).map(&:strip)
+            #self.tempExpression = booleanExpression.split(/(?<=[\!\[\]\)])/).map(&:strip)
 
-        if Global._debug: print ("Parsed boolean expression", self.tempExpression)
+            if Global._debug: print ("Parsed boolean expression", self.tempExpression)
 
-        # Iterate over the tokens in the expression and only keep the ones that are necessary.
-        # In other words, no empty strings or the brackets '()'.
+            # Iterate over the tokens in the expression and only keep the ones that are necessary.
+            # In other words, no empty strings or the brackets '()'.
 
-        for token in self.tempExpression:
+            for token in self.tempExpression:
 
-            token = token.strip()
+                token = token.strip()
            
-            if (len(token) == 0):
-                continue
+                if (len(token) == 0):
+                    continue
 
-            if (token in '()'):
-                continue
+                if (token in '()'):
+                    continue
 
-            self.booleanExpression.append(token)
+                self.booleanExpression.append(token)
 
-        if Global._debug: print ("Parsed boolean expression", self.booleanExpression)
+            if Global._debug: print ("Parsed boolean expression", self.booleanExpression)
 
-        self.dataDictionary = dataDictionary
-        self.postToken = ""
-        self.leftOperand = ""
-        self.currentTokenIndex = -1
+            self.dataDictionary = dataDictionary
+            self.postToken = ""
+            self.leftOperand = ""
+            self.currentTokenIndex = -1
 
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("BooleanExpressionEvaluatorA Exception:", e)
+            raise e
 
     
     # evaluateBooleanExpression
 
     def evaluateBooleanExpression(self):
 
-        leftBoolResult = False
+        try:
 
-        leftBoolResult = self.evaluateOrExpression()
+            leftBoolResult = False
 
-        # Determine if the end of line character has been reached.
+            leftBoolResult = self.evaluateOrExpression()
 
-        if (self.postToken == ";"):
+            # Determine if the end of line character has been reached.
 
-            # It has, therefore return the result of the boolean expression.
+            if (self.postToken == ";"):
 
-            return leftBoolResult
+                # It has, therefore return the result of the boolean expression.
 
-        else:
+                return leftBoolResult
 
-            # Otherwise, the end of line expression is missing.
+            else:
 
-            print ("ERROR: missing end of boolean expression token - ; in", self.booleanExpression)
+                # Otherwise, the end of line expression is missing.
 
-        return False
+                raise ("ERROR: missing end of boolean expression token - ; in", self.booleanExpression)
+
+            return False
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("BooleanExpressionEvaluatorA Exception:", e)
+            raise e
 
 
     # Private methods
@@ -299,9 +315,13 @@ class BooleanExpressionEvaluatorA(ABC):
     # evaluateConstruct
     #
     # Abstract method that needs to be overridden by a concrete subclass.
+    # Note, you cannot use the prefix "__" for an abstract method.
 
     @abstractmethod
-    def evaluateConstruct():
+    def evaluateConstruct(self) -> bool:
+
+        # Display an error message.
+
         if Global._debug: print("BooleanExpressionEvaluatorA is an abstract class.")
 
 

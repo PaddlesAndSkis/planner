@@ -1,9 +1,5 @@
 # PerceptionC
 
-# Import Project classes.
-
-from KnowledgeBaseC import KnowledgeBaseC
-
 
 class PerceptionC:
 

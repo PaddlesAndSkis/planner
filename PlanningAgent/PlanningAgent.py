@@ -2,6 +2,8 @@
 
 # Import Project classes.
 
+import Global
+
 from AgentC import AgentC
 from EnvironmentC import EnvironmentC
 from PlannerControllerC import PlannerControllerC
@@ -10,24 +12,32 @@ from PlannerControllerC import PlannerControllerC
 
 def main():
 
-    print ("Starting the Agent Planning Session")
+    try:
 
-    # Create the Agent and Environment.
+        if Global._info: print ("Starting the Agent Planning Session")
 
-    agent = AgentC()
-    environment = EnvironmentC("APM", "my_data_file.xlsx", "Planner_Rules.json")
+        # Create the Agent and Environment.
 
-    # Setup the Planner Controller with the Agent and Environment.
+        agent = AgentC()
+        environment = EnvironmentC("APM", "my_data_file.xlsx", "Planner_Rules.json")
 
-    planner_controller = PlannerControllerC(agent, environment)
+        # Setup the Planner Controller with the Agent and Environment.
 
-    # Start the Agent.
+        planner_controller = PlannerControllerC(agent, environment)
 
-    planner_controller.start_agent()
+        # Start the Agent.
 
-    # At this point, the Agent Planning session is complete.
+        planner_controller.start_agent()
+
+        # At this point, the Agent Planning session is complete.
    
-    print ("Agent Planning Session complete.")
+        if Global._info: print ("Agent Planning Session complete.")
+
+    except Exception as e:
+
+        # Catch and log all exceptions.
+
+        print ("PlanningAgent Exception:", e)
 
 
 # Start the Agent Planning Session.

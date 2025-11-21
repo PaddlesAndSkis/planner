@@ -22,46 +22,68 @@ class AgentC:
 
     def agent_goes_to_work(self, environment):
 
-        # Set the environment in which the Agent will be operating.
+        try:
 
-        self.environment = environment
+            # Set the environment in which the Agent will be operating.
 
-        # Create the Perception module and gather the inputs from the environment.
+            self.environment = environment
 
-        perception = PerceptionC(self.environment)
-        plan_inputs = perception.gather_inputs_from_environment()
+            # Create the Perception module and gather the inputs from the environment.
 
-        # Create the Knowledge Base to get the rules and data dictionary.
-        # The environment will have certain parameters to initialize the Knowledge Base.
+            perception = PerceptionC(self.environment)
+            plan_inputs = perception.gather_inputs_from_environment()
 
-        kb = KnowledgeBaseC(self.environment)
+            # Create the Knowledge Base to get the rules and data dictionary.
+            # The environment will have certain parameters to initialize the Knowledge Base.
 
-        # Create the Rules Engine with the Knowledge Base.
+            kb = KnowledgeBaseC(self.environment)
 
-        rules_engine = RulesEngineC(kb)
+            # Create the Rules Engine with the Knowledge Base.
 
-        # Build the Knowledge Graph.
+            rules_engine = RulesEngineC(kb)
 
-        kb = self.__build_knowledge_graph(kb, rules_engine)
+            # Build the Knowledge Graph.
 
-        # Invoke the plans retrieved from the environment.
-        # Note that the Perception module can be called to get a Plan input.
+            kb = self.__build_knowledge_graph(kb, rules_engine)
 
-      #  self.invoke_plans(plan_inputs, kb, rules_engine)
+            # Invoke the plans retrieved from the environment.
+            # Note that the Perception module can be called to get a Plan input.
 
-        plan = ""
+            if Global._manual_drive:
 
-        while (plan != "quit"):
+                # Manual environment inputs.
+
+                plan = ""
+
+                while (plan.upper().strip() != Global._quit):
             
-            plan_list = []
-            plan = perception.get_plan_from_user()
+                    # Get the plan from the user.
 
-            print ("Selected plan:", plan)
+                    plan_list = []
+                    plan = perception.get_plan_from_user()
 
-            if (plan != "quit"):
-                plan_list.append(plan)
-                self.invoke_plans(plan_list, kb, rules_engine)
+                    # Check to see if the user would like to quit.
 
+                    if (plan.upper().strip() != Global._quit):
+
+                        # The user has selected a plan.  Therefore, invoke it.
+
+                        plan_list.append(plan)
+                        self.__invoke_plans(plan_list, kb, rules_engine)
+
+            else:
+                
+                # Auto environment inputs.
+
+                self.__invoke_plans(plan_inputs, kb, rules_engine)
+
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("AgentC Exception:", e) 
+            raise e
 
 
     # Private methods.
@@ -71,83 +93,91 @@ class AgentC:
 
     def __build_knowledge_graph(self, kb, rules_engine) -> KnowledgeBaseC:
 
-        # Get the data set from the Environment.
+        try:
 
-        data_list = self.environment.load_data()
+            # Get the data set from the Environment.
 
-        # Get the initial data dictionary.
+            data_list = self.environment.load_data()
 
-        data_dictionary = kb.get_data_dictionary()
+            # Get the initial data dictionary.
 
-        # Iterate over the data in the data list from the environment and
-        # invoke the Rules Engine.
+            data_dictionary = kb.get_data_dictionary()
 
-        for datum in data_list:
+            # Iterate over the data in the data list from the environment and
+            # invoke the Rules Engine.
 
-            # Update the data dictionary with the data from the data record.
+            for datum in data_list:
 
-            data_dictionary.update(datum)
+                # Update the data dictionary with the data from the data record.
 
-            # Invoke the Rules Engine with the data dictionary.  Assign the data
-            # dictionary that is returned for the next rule session.
+                data_dictionary.update(datum)
 
-            data_dictionary = rules_engine.invoke_rules(data_dictionary)
+                # Invoke the Rules Engine with the data dictionary.  Assign the data
+                # dictionary that is returned for the next rule session.
 
-        # Once all the data records have been ingested, add the End node to the knowledge graph.
+                data_dictionary = rules_engine.invoke_rules(data_dictionary)
 
-        (rules_engine.get_knowledge_graph()).add_end_node()
+            # Once all the data records have been ingested, add the End node to the knowledge graph.
 
-        # Update the Knowledge Base's data dictionary based on the last data dictionary.
+            (rules_engine.get_knowledge_graph()).add_end_node()
 
-        kb.set_data_dictionary(data_dictionary)
+            # Update the Knowledge Base's data dictionary based on the last data dictionary.
 
-        # Set the Knowledge Graph in the Knowledge Base constructed from the Rules Engine.
+            kb.set_data_dictionary(data_dictionary)
 
-        kb.set_knowledge_graph(rules_engine.get_knowledge_graph())
+            # Set the Knowledge Graph in the Knowledge Base constructed from the Rules Engine.
 
-        # Return the Knowledge Base.
+            kb.set_knowledge_graph(rules_engine.get_knowledge_graph())
 
-        return kb
+            # Return the Knowledge Base.
+
+            return kb
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("AgentC exception:", e)
+            raise e
 
 
+    # __invoke_plans
 
+    def __invoke_plans(self, plan_list, kb, rules_engine):
 
-    # invoke_plans
+        try:
 
-    def invoke_plans(self, plan_list, kb, rules_engine):
+            # Get the initial data dictionary.
 
-        print ("======================================================================")
-        print ("======================================================================")
-        print ("======================================================================")
-        print ("======================================================================")
-        print ("======================================================================")
-        print ("======================================================================")
-        print ("======================================================================")
-        print ("======================================================================")
-        # Get the initial data dictionary.
+            data_dictionary = kb.get_data_dictionary()
 
-        data_dictionary = kb.get_data_dictionary()
-        print ("data_dictionary:", data_dictionary)
-        plan_kb = ({ "PLANNING" : "in_progress" })
-        data_dictionary.update(plan_kb)
-
-        # Iterate over the data in the data list from the environment and
-        # invoke the Rules Engine.
-
-        for plan in plan_list:
-
-            plan_kb = ({ "PLAN" : plan })
-           # data_dictionary.append(plan_kb)
-
-            # Update the data dictionary with the data from the data record.
-
+            plan_kb = ({ "PLANNING" : "in_progress" })
             data_dictionary.update(plan_kb)
 
-            # Invoke the Rules Engine with the data dictionary.  Assign the data
-            # dictionary that is returned for the next rule session.
+            # Iterate over the data in the data list from the environment and
+            # invoke the Rules Engine.
 
-            data_dictionary = rules_engine.invoke_rules(data_dictionary)
+            for plan in plan_list:
 
+                # Set the plan name on the Knowledge Base.
+
+                plan_kb = ({ "PLAN" : plan })
+
+                # Update the data dictionary with the data from the data record.
+
+                data_dictionary.update(plan_kb)
+
+                # Invoke the Rules Engine with the data dictionary.  Assign the data
+                # dictionary that is returned for the next rule session.
+
+                data_dictionary = rules_engine.invoke_rules(data_dictionary)
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("AgentC Exception:", e)
+            raise e
         
 
 

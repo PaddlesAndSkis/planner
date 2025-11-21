@@ -1,6 +1,13 @@
 # EnvironmentC
 
+# Import libraries.
+
 import random
+
+# Import Project classes.
+
+import Global
+
                                                                                                                                                                                                         
 class EnvironmentC:
     
@@ -93,7 +100,7 @@ class EnvironmentC:
 
         data_list = []
 
-        for i in range(50):
+        for i in range(5):
 
             app_name = "App" + str(i)
 
