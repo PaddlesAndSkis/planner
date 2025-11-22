@@ -5,17 +5,25 @@ import Global
 
 class PlannerSetActionConstructC(PlannerActionConstructA):
    
-    def invokeAction(self, dataDictionary, actionData, plannerKnowledgeGraph):
+    def invokeAction(self, dataDictionary, actionData, plannerKnowledgeGraph) -> {}:
 
-        print ("In SET with", actionData)
-        print ("In SET with", dataDictionary)
+        try:
 
-        myKey   = actionData[1].upper()  # .strip()
-        myValue = actionData[3]  #.delete('()').strip
+            if Global._debug: print ("Set Action actionData:", actionData)
+            if Global._debug: print ("Set Action dataDictionary:", dataDictionary)
 
-        print ("In SET with myKey : myValue", myKey, " ->", myValue)
+            myKey   = actionData[1].upper()  # .strip()
+            myValue = actionData[3]  #.delete('()').strip
 
-        dataDictionary[myKey] = myValue
+            if Global._debug: print ("Set Action:", myKey, "will be set to", myValue)
 
-        return dataDictionary
+            dataDictionary[myKey] = myValue
 
+            return dataDictionary
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("PlannerSetActionConstructC Exception:", e)
+            raise e

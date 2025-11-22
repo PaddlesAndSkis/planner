@@ -12,28 +12,38 @@ import Global
 
 class PlannerAddActionConstructC(PlannerGraphActionConstructA):
    
+    # Constructor
+
     def __init__(self):
         super().__init__()
 
+    
+    # invoke Action
 
-    def invokeAction(self, dataDictionary, actionData, plannerKnowledgeGraph):
+    def invokeAction(self, dataDictionary, actionData, plannerKnowledgeGraph) -> {}:
 
-        print ("In ADD with", actionData)
-        print ("In ADD with", dataDictionary)
+        try:
+            if Global._debug: print ("Add Action actionData:", actionData)
+            if Global._debug: print ("Add Action dataDictionary:", dataDictionary)
 
-        # "ADD <value> to <dictionary_variable>"
+            # "ADD <value> to <dictionary_variable>"
 
-        value               = actionData[1] #.upper()  # .strip()
-        dictionary_variable = actionData[3].upper()  #.delete('()').strip
+            value               = actionData[1] #.upper()  # .strip()
+            dictionary_variable = actionData[3].upper()  #.delete('()').strip
 
-        print ("In ADD with value to add to dictionary variable: ", value, "will be added to", dictionary_variable)
+            if Global._debug: print ("Add Action:", value, "will be added to", dictionary_variable)
 
+            dictionary_variable_value = int(dataDictionary[dictionary_variable]) + int(value)
 
-        dictionary_variable_value = int(dataDictionary[dictionary_variable]) + int(value)
+            # Uupdate the data dictionary with the new value..
 
-        # Uupdate the data dictionary with the new value..
+            dataDictionary.update({dictionary_variable : str(dictionary_variable_value)})
 
-        dataDictionary.update({dictionary_variable : str(dictionary_variable_value)})
+            return dataDictionary
 
-        return dataDictionary
+        except Exception as e:
 
+            # Catch, log and raise all exceptions.
+
+            print ("PlannerAddActionConstructC Exception:", e)
+            raise e

@@ -38,25 +38,34 @@ class PlannerActionEvaluatorConstructC:
     # [in]: action - the action to take once the condition constructs evaluate to True
     # [in]: dataDictionary - the dictionary of variables (keyword-value pairs)
 
-    def invokeAction(self, action, dataDictionary, plannerKnowledgeGraph):
+    def invokeAction(self, action, dataDictionary, plannerKnowledgeGraph) -> {}:
 
-        if Global._debug: print ("INVOKING ACTION!!!")
+        try:
 
-        # Split the action constructs by the space character.
+            if Global._debug: print ("INVOKING ACTION!!!")
 
-        constructComponents = action.split(" ")
+            # Split the action constructs by the space character.
 
-        # Remove the action's brackets.  The actionData consists of all the 
-        # other components of the action that will be left up to the individual
-        # action to interpret.
+            constructComponents = action.split(" ")
 
-        actionComponent = constructComponents[0].upper() #.delete('()').strip
-        actionData      = constructComponents
+            # Remove the action's brackets.  The actionData consists of all the 
+            # other components of the action that will be left up to the individual
+            # action to interpret.
 
-        if Global._debug: print("actionComponent =", actionComponent)
+            actionComponent = constructComponents[0].upper() #.delete('()').strip
+            actionData      = constructComponents
 
-        # Invoke the action.
+            if Global._debug: print("actionComponent =", actionComponent)
 
-        dataDictionary = self.actionConstructLibrary[actionComponent].invokeAction(dataDictionary, actionData, plannerKnowledgeGraph)
+            # Invoke the action.
 
-        return dataDictionary
+            dataDictionary = self.actionConstructLibrary[actionComponent].invokeAction(dataDictionary, actionData, plannerKnowledgeGraph)
+
+            return dataDictionary
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("PlannerActionEvaluatorConstructC Exception:", e)
+            raise e

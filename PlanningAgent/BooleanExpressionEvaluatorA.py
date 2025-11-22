@@ -93,7 +93,7 @@ class BooleanExpressionEvaluatorA(ABC):
 
                 # Otherwise, the end of line expression is missing.
 
-                raise ("ERROR: missing end of boolean expression token - ; in", self.booleanExpression)
+                raise Exception("ERROR: missing end of boolean expression token - ; in", self.booleanExpression)
 
             return False
 
@@ -101,7 +101,7 @@ class BooleanExpressionEvaluatorA(ABC):
 
             # Catch, log and raise all exceptions.
 
-            print ("BooleanExpressionEvaluatorA Exception:", e)
+            print ("BooleanExpressionEvaluatorA Exceptijjon:", e)
             raise e
 
 
@@ -112,206 +112,241 @@ class BooleanExpressionEvaluatorA(ABC):
 
     def evaluateOrExpression(self):
 
-        # Set the left and right condition boolean result indicators.
+        try:
 
-        leftBoolResult = False
-        rightBoolResult = False 
+            # Set the left and right condition boolean result indicators.
 
-        # Get the left condition boolean result for the AND condition
-        # as AND takes precedence over OR.
+            leftBoolResult = False
+            rightBoolResult = False 
 
-        leftBoolResult = self.evaluateAndExpression()
+            # Get the left condition boolean result for the AND condition
+            # as AND takes precedence over OR.
 
-        # Do while the OR condition.
+            leftBoolResult = self.evaluateAndExpression()
 
-        while (self.postToken == "OR"):
+            # Do while the OR condition.
 
-            # Evaluate the AND condition.
+            while (self.postToken == "OR"):
 
-            rightBoolResult = self.evaluateAndExpression()
+                # Evaluate the AND condition.
 
-            # Determine if the OR condition is True or False.
-            # (T | F) = T; T | T = T etc.
+                rightBoolResult = self.evaluateAndExpression()
 
-            if ((leftBoolResult == True) or (rightBoolResult == True)):
+                # Determine if the OR condition is True or False.
+                # (T | F) = T; T | T = T etc.
 
-                leftBoolResult = True
-            else:
+                if ((leftBoolResult == True) or (rightBoolResult == True)):
 
-                leftBoolResult = False
+                    leftBoolResult = True
+                else:
+
+                    leftBoolResult = False
 
             
-        # Return the left boolean condition result.
+            # Return the left boolean condition result.
 
-        return leftBoolResult
+            return leftBoolResult
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("BooleanExpressionEvaluatorA Exception:", e)
+            raise e
 
 
     # evaluateAndExpression
 
     def evaluateAndExpression(self):
 
+        try:
+
         # Set the left and right condition boolean result indicators.
 
-        leftBoolResult = False
-        rightBoolResult = False 
+            leftBoolResult = False
+            rightBoolResult = False 
 
-        # Evaluate the sub condition to get the left boolean
-        # result.
+            # Evaluate the sub condition to get the left boolean
+            # result.
 
-        leftBoolResult = self.evaluateSubCondition()
+            leftBoolResult = self.evaluateSubCondition()
 
-        # Is the token an AND.
+            # Is the token an AND.
 
-        while (self.postToken == "AND"):
+            while (self.postToken == "AND"):
 
-            # Evaluate the AND condition expression.
+                # Evaluate the AND condition expression.
 
-            rightBoolResult = self.evaluateAndExpression()
+                rightBoolResult = self.evaluateAndExpression()
 
-            # Determine if the AND condition is True or False.
-            # (T & F) = F; T & T = T etc.
+                # Determine if the AND condition is True or False.
+                # (T & F) = F; T & T = T etc.
                 
-            if ((leftBoolResult == True) and (rightBoolResult == True)):
+                if ((leftBoolResult == True) and (rightBoolResult == True)):
 
-                leftBoolResult = True
-            else:
+                    leftBoolResult = True
+                else:
 
-                leftBoolResult = False
+                    leftBoolResult = False
 
-        # Return the left boolean condition result.
+            # Return the left boolean condition result.
 
-        return leftBoolResult
+            return leftBoolResult
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("BooleanExpressionEvaluatorA Exception:", e)
+            raise e
 
 
     # evaluateSubCondition
 
     def evaluateSubCondition(self):
 
-        # Set the boolean indicators.
+        try:
 
-        leftBoolResult = False
-        isNotExpression = False
+            # Set the boolean indicators.
 
-        # Get the next token in the expression.
+            leftBoolResult = False
+            isNotExpression = False
 
-        self.leftOperand = self.nextTokenInExpression()
+            # Get the next token in the expression.
 
-        # Determine if this is a NOT (!) operation.
-
-        if (self.leftOperand == "!"):
-
-            # It is a NOT (!) operation.
-
-            isNotExpression = True
             self.leftOperand = self.nextTokenInExpression()
 
+            # Determine if this is a NOT (!) operation.
+
+            if (self.leftOperand == "!"):
+
+                # It is a NOT (!) operation.
+
+                isNotExpression = True
+                self.leftOperand = self.nextTokenInExpression()
+
   
-        # Determine if this is a left bracket for order of operations.
+            # Determine if this is a left bracket for order of operations.
 
-        if (self.leftOperand == "["):
+            if (self.leftOperand == "["):
 
-            # It is a left bracket, therefore start by evaluating the
-            # OR expression.
+                # It is a left bracket, therefore start by evaluating the
+                # OR expression.
 
-            leftBoolResult = self.evaluateOrExpression()
+                leftBoolResult = self.evaluateOrExpression()
 
-            # Determine if the next token is the right bracket to end 
-            # an order of operations expression.
+                # Determine if the next token is the right bracket to end 
+                # an order of operations expression.
 
-            if (self.postToken == "]"):
+                if (self.postToken == "]"):
 
-                # This is the end of the expression.  Determine if this 
-                # was a NOT (!) expression.
+                    # This is the end of the expression.  Determine if this 
+                    # was a NOT (!) expression.
 
-                if (isNotExpression == True): 
+                    if (isNotExpression == True): 
 
-                    # This is a NOT (!) expression, therefore, return
-                    # the opposite result.
+                        # This is a NOT (!) expression, therefore, return
+                        # the opposite result.
 
-                    if (leftBoolResult == True):
+                        if (leftBoolResult == True):
 
-                        # Reverse the boolean result.
+                            # Reverse the boolean result.
 
-                        leftBoolResult = False
+                            leftBoolResult = False
 
-                    else:
+                        else:
                         
-                        # Same as above, reverse the boolean result as
-                        # this is a NOT (!) expression.
+                            # Same as above, reverse the boolean result as
+                            # this is a NOT (!) expression.
 
-                        leftBoolResult = True
+                            leftBoolResult = True
 
-                    # Reset the NOT (!) expression indicator.
+                        # Reset the NOT (!) expression indicator.
 
-                    isNotExpression = False
+                        isNotExpression = False
 
-                # Get the next token in the expression.
+                    # Get the next token in the expression.
 
-                self.postToken = self.nextTokenInExpression()
+                    self.postToken = self.nextTokenInExpression()
                 
-            else:
+                else:
 
-                # If this point is reached, a right parenthesis is missing and 
-                # therefore, the expression is misformed.
+                    # If this point is reached, a right parenthesis is missing and 
+                    # therefore, the expression is misformed.
 
-                #raise "ERROR: Missing right parenthesis in #{@booleanExpression}"
-                if Global._debug: print("ERROR: Missing right parenthesis in", self.booleanExpression)
-
+                    print ("ERROR: Received", self.postToken, "Missing right parenthesis in", self.booleanExpression)
+                    raise Exception("ERROR: Received", self.postToken, "Missing right parenthesis in", self.booleanExpression)
                
-        else:
-
-            # Evaluate the condition.
-
-            expressionResult = self.evaluateConstruct()
-
-            if Global._debug: print(self.leftOperand, "is", expressionResult)
-
-            # Set the boolean result.
-                
-            if (expressionResult == True):
-
-                self.postToken = self.nextTokenInExpression()
-                leftBoolResult = True
-
             else:
+
+                # Evaluate the condition.
+
+                expressionResult = self.evaluateConstruct()
+
+                if Global._debug: print(self.leftOperand, "is", expressionResult)
+
+                # Set the boolean result.
+                
+                if (expressionResult == True):
+
+                    self.postToken = self.nextTokenInExpression()
+                    leftBoolResult = True
+
+                else:
                    
-                self.postToken = self.nextTokenInExpression()
-                leftBoolResult = False
+                    self.postToken = self.nextTokenInExpression()
+                    leftBoolResult = False
 
-        # Return the boolean result.
+            # Return the boolean result.
 
-        return leftBoolResult
+            return leftBoolResult
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("BooleanExpressionEvaluatorA Excepiiition:", e)
+            raise e
+
         
-
     # nextTokenInExpression
 
     def nextTokenInExpression(self):
 
-        needAToken = True
+        try:
 
-        while (needAToken == True):
+            needAToken = True
 
-            self.currentTokenIndex = self.currentTokenIndex + 1
+            while (needAToken == True):
 
-          #  print ("currentTokenIndex = ", self.currentTokenIndex)
-          #  print ("self.booleanExpression = ", self.booleanExpression)
+                self.currentTokenIndex = self.currentTokenIndex + 1
 
-            i = 0
-            for toke in self.booleanExpression:
-            #    print (i, ' ', self.booleanExpression[i]);
-                i = i + 1
+              #  print ("currentTokenIndex = ", self.currentTokenIndex)
+              #  print ("self.booleanExpression = ", self.booleanExpression)
 
-            currentToken = self.booleanExpression[self.currentTokenIndex]
+                i = 0
+                for toke in self.booleanExpression:
+                #    print (i, ' ', self.booleanExpression[i]);
+                    i = i + 1
 
-            if Global._debug: print("Evaluating expression token:", currentToken)
+                currentToken = self.booleanExpression[self.currentTokenIndex]
 
-            if (currentToken != ""):
+                if Global._debug: print("Evaluating expression token:", currentToken)
 
-                needAToken = False
+                if (currentToken != ""):
 
-        return currentToken
+                    needAToken = False
+
+            return currentToken
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("BooleanExpressionEvaluatorA Exception:", e)
+            raise e
+
         
-
     # evaluateConstruct
     #
     # Abstract method that needs to be overridden by a concrete subclass.

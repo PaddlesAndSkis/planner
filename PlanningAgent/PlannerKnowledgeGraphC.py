@@ -25,9 +25,9 @@ class PlannerKnowledgeGraphC:
 
         attribute_list = [] 
         
-        print ("attribute_list  = ", attribute_list)
-        print ("attribute_name  = ", attribute_name)
-        print ("attribute_value = ", attribute_value)
+        if Global._debug: print ("PlannerKnowledgeGraphC add_node attribute_list  = ", attribute_list)
+        if Global._debug: print ("PlannerKnowledgeGraphC add_node attribute_name  = ", attribute_name)
+        if Global._debug: print ("PlannerKnowledgeGraphC add_node attribute_value = ", attribute_value)
 
         # Check to see if a node with this node_id already exists in the graph.
 

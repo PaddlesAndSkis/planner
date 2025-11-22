@@ -30,11 +30,15 @@ class AgentC:
 
             # Create the Perception module and gather the inputs from the environment.
 
+            if Global._info: print ("Creating the Agent's Perception module")
+
             perception = PerceptionC(self.environment)
             plan_inputs = perception.gather_inputs_from_environment()
 
             # Create the Knowledge Base to get the rules and data dictionary.
             # The environment will have certain parameters to initialize the Knowledge Base.
+            
+            if Global._info: print ("Creating the Agent's Knowledge Base")
 
             kb = KnowledgeBaseC(self.environment)
 
@@ -44,7 +48,11 @@ class AgentC:
 
             # Build the Knowledge Graph.
 
+            if Global._info: print ("Building the Agent's Knowledge Base's Knowledge Graph")
+
             kb = self.__build_knowledge_graph(kb, rules_engine)
+
+            if Global._info: print ("Planning starts")
 
             # Invoke the plans retrieved from the environment.
             # Note that the Perception module can be called to get a Plan input.

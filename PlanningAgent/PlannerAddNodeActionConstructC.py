@@ -16,23 +16,31 @@ class PlannerAddNodeActionConstructC(PlannerGraphActionConstructA):
         super().__init__()
 
 
-    def invokeAction(self, dataDictionary, actionData, plannerKnowledgeGraph):
+    def invokeAction(self, dataDictionary, actionData, plannerKnowledgeGraph) -> {}:
 
-        print ("In ADD_NODE with", actionData)
-        print ("In ADD_NODE with", dataDictionary)
+        try:
 
-        # "ADD_NODE <attribute_name> <attribute_value> to <node_id> named <node_name>"
+            if Global._debug: print ("Add_Npde Action actionData:", actionData)
+            if Global._debug: print ("Add_Node Action dataDictionary:", dataDictionary)
 
-        attribute_name  = actionData[1] #.upper()  # .strip()
-        attribute_value = actionData[2] #.upper()  # .strip()
-        node_id         = actionData[4]  #.delete('()').strip
-        node_name       = actionData[6]  #.delete('()').strip
+            # "ADD_NODE <attribute_name> <attribute_value> to <node_id> named <node_name>"
 
-        print ("In ADD_NODE with", attribute_name, " ", attribute_value, "will be added to", node_id, "named", node_name)
+            attribute_name  = actionData[1] #.upper()  # .strip()
+            attribute_value = actionData[2] #.upper()  # .strip()
+            node_id         = actionData[4]  #.delete('()').strip
+            node_name       = actionData[6]  #.delete('()').strip
 
-        # Add the graph node to the Planner Knowledge Graph.
+            if Global._debug: print ("Add_Node Action: a node with", attribute_name, " ", attribute_value, "will be added to", node_id, "named", node_name)
 
-        plannerKnowledgeGraph.add_node(node_id, node_name, attribute_name, attribute_value)
+            # Add the graph node to the Planner Knowledge Graph.
 
-        return dataDictionary
+            plannerKnowledgeGraph.add_node(node_id, node_name, attribute_name, attribute_value)
 
+            return dataDictionary
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("PlannerAddNodeActionConstructC Exception:", e)
+            raise e

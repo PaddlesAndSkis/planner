@@ -8,26 +8,37 @@ import json
 
 from PlannerKnowledgeGraphC import PlannerKnowledgeGraphC
 
+import Global
+
 
 class KnowledgeBaseC:
     
     def __init__(self, environment):
 
-        # Set the Knowledge Base attributes.
+        try:
 
-        self.environment = environment
+            # Set the Knowledge Base attributes.
 
-        self.data_dictionary = {}
-        self.rules = []  # [] of {}
-        self.knowledge_graph = None
+            self.environment = environment
 
-        self.__load_data_dictionary()
+            self.data_dictionary = {}
+            self.rules = []  # [] of {}
+            self.knowledge_graph = None
 
-        #  For inline rules:    self.__load_rules()
+            self.__load_data_dictionary()
 
-        # Load the rules from the JSON rules file.
+            #  For inline rules:    self.__load_rules()
 
-        self.__load_rules_from_json()
+            # Load the rules from the JSON rules file.
+
+            self.__load_rules_from_json()
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print("KnowledgeBaseC Exception:", e)
+            raise e
 
 
     # get_data_dictionary
@@ -86,26 +97,34 @@ class KnowledgeBaseC:
 
     def __load_rules_from_json(self):
 
-        # Open the JSON file specified in the Environment in read mode.
+        try:
 
-        with open(self.environment.get_rules_file(), 'r') as f:
+            # Open the JSON file specified in the Environment in read mode.
 
-            # Load the JSON data into a Python dictionary
-            rules = json.load(f)
+            with open(self.environment.get_rules_file(), 'r') as f:
+
+                # Load the JSON data into a Python dictionary
+                rules = json.load(f)
         
-        for rule in rules:
+            for rule in rules:
 
-            print ("RUle -->", rule)
+                if Global._debug: print ("Loading rule -->", rule)
 
-            rule = { "ID" : rule["id"],
-                     "name" : rule["name"], 
-                     "description" : rule["description"],
-                     "condition" : rule["condition"], 
-                     "action" : rule["action"]
-                    }
+                rule = { "ID" : rule["id"],
+                         "name" : rule["name"], 
+                         "description" : rule["description"],
+                         "condition" : rule["condition"], 
+                         "action" : rule["action"]
+                        }
 
-            self.rules.append(rule)
+                self.rules.append(rule)
 
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("KnowledgeBaseC Exception:", e)
+            raise e
 
 
     def __load_rules(self):

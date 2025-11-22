@@ -26,6 +26,7 @@ class PerceptionC:
 
         # Get the plan from the user.
 
+        print ("\n\n------------")
         return input("Please enter a plan to retrieve:  rebuild, rehost, replace, best, worst: ")
 
         

@@ -22,16 +22,25 @@ class PlannerBooleanExpressionEvaluatorC(BooleanExpressionEvaluatorA):
 
     def __init__(self, booleanExpression, dataDictionary):
 
-        # Invoke the super class constructor.
+        try:
 
-        super().__init__(booleanExpression, dataDictionary)
+            # Invoke the super class constructor.
 
-        # Create a Hashtable of the set of allowable condition constructs.
+            super().__init__(booleanExpression, dataDictionary)
 
-        self.conditionConstructLibrary = {}
-        self.conditionConstructLibrary["IS"]              = PlannerIsConditionConstructC()
-        self.conditionConstructLibrary["IS_GREATER_THAN"] = PlannerIsGreaterThanConditionConstructC()
-        self.conditionConstructLibrary["IS_LESS_THAN"]    = PlannerIsLessThanConditionConstructC()
+            # Create a Hashtable of the set of allowable condition constructs.
+
+            self.conditionConstructLibrary = {}
+            self.conditionConstructLibrary["IS"]              = PlannerIsConditionConstructC()
+            self.conditionConstructLibrary["IS_GREATER_THAN"] = PlannerIsGreaterThanConditionConstructC()
+            self.conditionConstructLibrary["IS_LESS_THAN"]    = PlannerIsLessThanConditionConstructC()
+
+        except Exception as e:
+
+            # Catch, log and rethrow all exceptions.
+
+            print ("PlannerBooleanExpressionEvaluatorC Exception:", e)
+            raise e
 
 
     # evaluateConstruct

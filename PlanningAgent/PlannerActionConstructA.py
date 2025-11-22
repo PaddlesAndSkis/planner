@@ -12,7 +12,9 @@ class PlannerActionConstructA(ABC):
         pass
 
 
-    def invokeAction(self, dataDictionary, actionHash, plannerKnowledgeGraph):
+    # invokeAction
+
+    def invokeAction(self, dataDictionary, actionHash, plannerKnowledgeGraph) -> {}:
        
         print ("PlannerboxActionConstructA is abstract.")
 

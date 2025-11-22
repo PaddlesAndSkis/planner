@@ -44,7 +44,7 @@
     "id": "BV-5",
     "name": "Business Value Assessment",
     "description": "Assess the business value based on the score.",
-    "condition": "[(layer is business_value)] AND [(business_value_score is_greater_than 1) OR [(business_value_score is 2) AND (business_criticality is critical)] ;",
+    "condition": "[(layer is business_value)] AND [(business_value_score is_greater_than 1) OR [(business_value_score is 2) AND (business_criticality is critical)]] ;",
     "action": "SET business_value to High"
   },
 
@@ -165,7 +165,7 @@
     "id": "TC-5",
     "name": "Technical Condition Assessment",
     "description": "Assess the technical condition based on the score.",
-    "condition": "[(layer is technical_condition)] AND [(technical_condition_score is_greater_than 2) OR [(technical_condition_score is 2) AND (software_technology is excellent)] ;",
+    "condition": "[(layer is technical_condition)] AND [(technical_condition_score is_greater_than 2) OR [(technical_condition_score is 2) AND (software_technology is excellent)]] ;",
     "action": "SET technical_condition to High"
   },
 
@@ -286,7 +286,7 @@
     "id": "RI-5",
     "name": "Application Risk Assessment",
     "description": "Assess the application risk based on the score.",
-    "condition": "[(layer is application_risk)] AND [(application_risk_score is_less_than 1) OR [(application_risk_score is 1) AND (resource_availability is excellent)] ;",
+    "condition": "[(layer is application_risk)] AND [(application_risk_score is_less_than 1) OR [(application_risk_score is 1) AND (resource_availability is excellent)]] ;",
     "action": "SET application_risk to Low"
   },
 
@@ -407,7 +407,7 @@
     "id": "CO-5",
     "name": "Application Cost Assessment",
     "description": "Assess the application cost based on the score.",
-    "condition": "[(layer is application_cost)] AND [(application_cost_score is_less_than 1) OR [(application_cost_score is 2) AND (funding_availability is good)] ;",
+    "condition": "[(layer is application_cost)] AND [(application_cost_score is_less_than 1) OR [(application_cost_score is 2) AND (funding_availability is good)]] ;",
     "action": "SET application_cost to Low"
   },
 
@@ -527,7 +527,7 @@
     "id": "MO-5",
     "name": "Modernization Assessment",
     "description": "Assess the modernization based on the score.",
-    "condition": "[(layer is modernization)] AND [(modernization_score is_greater_than 2) OR [(modernization_score is 2) AND (architecture is excellent)] ;",
+    "condition": "[(layer is modernization)] AND [(modernization_score is_greater_than 2) OR [(modernization_score is 2) AND (architecture is excellent)]] ;",
     "action": "SET modernization to High"
   },
 

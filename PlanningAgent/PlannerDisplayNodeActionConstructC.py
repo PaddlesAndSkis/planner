@@ -20,41 +20,49 @@ class PlannerDisplayNodeActionConstructC(PlannerGraphActionConstructA):
 
     def invokeAction(self, dataDictionary, actionData, plannerKnowledgeGraph):
 
-        print ("In DISPLAY_NODE with", actionData)
-        print ("In DISPLAY_NODE with", dataDictionary)
+        try:
+            if Global._debug: print ("Display_Node Action actionData:", actionData)
+            if Global._debug: print ("Display_Node Action dataDictionary:", dataDictionary)
 
-        # "DISPLAY_PLAN application on node low_business_value+high_technical_condition+high_application_cost"
-        # "DISPLAY_PLAN application on node shortest_path"
+            # "DISPLAY_PLAN application on node low_business_value+high_technical_condition+high_application_cost"
+            # "DISPLAY_PLAN application on node shortest_path"
 
-        attribute_name  = actionData[1] #.upper()  # .strip()
-      #  attribute_value = actionData[2] #.upper()  # .strip()
-        node_name         = actionData[4]  #.delete('()').strip
+            attribute_name  = actionData[1] #.upper()  # .strip()
+          #  attribute_value = actionData[2] #.upper()  # .strip()
+            node_name         = actionData[4]  #.delete('()').strip
 
-        print ("In DISPLAY_NODE with", attribute_name, " on Node named", node_name)
+            if Global._debug: print ("Display_Node Action:", attribute_name, " on Node named", node_name)
 
-        # Determine which information to display.
+            # Determine which information to display.
 
-        if (node_name == 'shortest_path'):
+            if (node_name == 'shortest_path'):
 
-            self.display_shortest_path(plannerKnowledgeGraph)
+                self.display_shortest_path(plannerKnowledgeGraph)
 
-        elif (node_name == 'longest_path'):
+            elif (node_name == 'longest_path'):
 
-            self.display_longest_path(plannerKnowledgeGraph)
+                self.display_longest_path(plannerKnowledgeGraph)
 
-        else:
+            else:
 
-            self.display_node_via_search(node_name, plannerKnowledgeGraph)
+                self.display_node_via_search(node_name, plannerKnowledgeGraph)
 
 
-        # Display the information on the node to the Planner Knowledge Graph.
+            # Display the information on the node to the Planner Knowledge Graph.
 
-     #   plannerKnowledgeGraph.print()
+         #   plannerKnowledgeGraph.print()
 
-     #   print("If you want to know which nodes have Low_business_value, Low_technical_condition, you must BFS:")
-     #   plannerKnowledgeGraph.search_graph_by_names('Low_business_value', 'Low_technical_condition')
+         #   print("If you want to know which nodes have Low_business_value, Low_technical_condition, you must BFS:")
+         #   plannerKnowledgeGraph.search_graph_by_names('Low_business_value', 'Low_technical_condition')
 
-        return dataDictionary
+            return dataDictionary
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("PlannerDisplayNodeActionConstructC Exception:", e)
+            raise e
 
 
     # display_shortest_path
@@ -77,21 +85,32 @@ class PlannerDisplayNodeActionConstructC(PlannerGraphActionConstructA):
 
     # display_node_via_search
 
-    def display_node_via_search(self, search_criteria, plannerKnowledgeGraph):
+    def display_node_via_search(self, search_criteria, plannerKnowledgeGraph) -> {}:
 
-        matched_nodes_list = []
-        search_criteria_tokens =  re.split(r"\+", search_criteria)
+        try:
 
-        print ("Search criteria", search_criteria)
-        print ("Search criteria tokens", search_criteria_tokens)
+            matched_nodes_list = []
+            search_criteria_tokens =  re.split(r"\+", search_criteria)
 
-        final_nodes_list = plannerKnowledgeGraph.search_graph_by_multi_names(search_criteria_tokens, matched_nodes_list)
+            print ("Search criteria", search_criteria)
+            print ("Search criteria tokens", search_criteria_tokens)
 
-        print ("Final nodes list = ", final_nodes_list)
-        print ("Final nodes list sorted = ", sorted(final_nodes_list))
+            final_nodes_list = plannerKnowledgeGraph.search_graph_by_multi_names(search_criteria_tokens, matched_nodes_list)
 
-        for final_node in final_nodes_list:
-            plannerKnowledgeGraph.print_node_applications(final_node, "application")
+            print ("Final nodes list = ", final_nodes_list)
+            print ("Final nodes list sorted = ", sorted(final_nodes_list))
+
+            for final_node in final_nodes_list:
+                plannerKnowledgeGraph.print_node_applications(final_node, "application")
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("PlannerDisplayNodeActionConstructC Exception:", e)
+            raise e
+
+
 
       #  plannerKnowledgeGraph.find_path_through_graph(final_nodes_list)
 

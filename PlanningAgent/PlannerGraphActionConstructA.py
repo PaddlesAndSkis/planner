@@ -16,7 +16,7 @@ class PlannerGraphActionConstructA(PlannerActionConstructA, ABC):
         pass
 
 
-    def invokeAction(self, dataDictionary, actionData, plannerKnowledgeGraph):
+    def invokeAction(self, dataDictionary, actionData, plannerKnowledgeGraph) -> {}:
 
         print ("ABATRACT CLSSS")
 

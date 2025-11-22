@@ -4,7 +4,7 @@
 
 # Information display variables.
 
-_debug = True
+_debug = False
 _info  = True
 
 # Environment variables.
