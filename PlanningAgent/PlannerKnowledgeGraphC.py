@@ -47,6 +47,7 @@ class PlannerKnowledgeGraphC:
 
         self.G.add_node(node_id, node=node_id, name=node_name)
         self.G.nodes[node_id][attribute_name] = attribute_list
+        self.G.nodes[node_id]["description"] = attribute_list
 
 
     # add_edge
@@ -93,6 +94,14 @@ class PlannerKnowledgeGraphC:
 
         for leaf_node in leaf_nodes:
             self.print_node_applications(leaf_node, attribute_name)
+
+
+    def get_shortest_path_nodes(self) -> []:
+
+        source_node = "Start"
+        dest_node = "End"
+
+        return nx.astar_path(self.G, source_node, dest_node, heuristic=None, weight='manhattan_distance')
 
 
     def print_shortest_path(self):

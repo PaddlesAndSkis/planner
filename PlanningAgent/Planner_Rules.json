@@ -606,7 +606,7 @@
   {
     "id": "PLAN-1",
     "name": "Identify Poor Performing Applications",
-    "description": "The poorest performing applications will have the lowest weighting from Start to End.",
+    "description": "The poorest performing applications will have the lowest weighting from Start to End and are a high priority.",
     "condition": "[(planning is in_progress) AND (plan is shortest_path)] ;",
     "action": "DISPLAY_NODE application on node shortest_path"
   },
@@ -614,7 +614,7 @@
   {
     "id": "PLAN-2",
     "name": "Identify Best Performing Applications",
-    "description": "The best performing applications will have the highest weighting from Start to End.",
+    "description": "The best performing applications will have the highest weighting from Start to End and are a low priority.",
     "condition": "[(planning is in_progress) AND (plan is longest_path)] ;",
     "action": "DISPLAY_NODE application on node longest_path"
   },
@@ -622,7 +622,7 @@
   {
     "id": "PLAN-3",
     "name": "Identify Applications to Retire",
-    "description": "Applications that are low business value, low technical condition and high cost.",
+    "description": "Applications that need to be retired are low business value, low technical condition and high cost.",
     "condition": "[(planning is in_progress) AND (plan is retire)] ;",
     "action": "DISPLAY_NODE application on node Low_business_value+High_technical_condition+High_application_cost"
   },
@@ -630,7 +630,7 @@
   {
     "id": "PLAN-4",
     "name": "Identify Applications to Replace",
-    "description": "Applications that are high business value, low technical condition and high risk.",
+    "description": "Applications that need to be replaced are high business value, low technical condition and high risk.",
     "condition": "[(planning is in_progress) AND (plan is replace)] ;",
     "action": "DISPLAY_NODE application on node High_business_value+Low_technical_condition+High_application_risk"
   },
@@ -638,7 +638,7 @@
   {
     "id": "PLAN-5",
     "name": "Identify Applications to Rebuild",
-    "description": "Applications that are high business value, low technical condition and low modernization.",
+    "description": "Applications that need to be rebuilt are high business value, low technical condition and low modernization.",
     "condition": "[(planning is in_progress) AND (plan is rebuild)] ;",
     "action": "DISPLAY_NODE application on node Low_modernization+High_business_value+Low_technical_condition+High_application_risk"
   }

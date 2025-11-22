@@ -68,7 +68,7 @@ class PlannerIsGreaterThanConditionConstructC(PlannerConditionConstructA):
 
             # If this point is reached, the condition is False.
 
-            if Global._debug: print ("False:", dataDictionaryValue, "<=", myValue)
+            if Global._debug: print ("False:", myKey, "<=", myValue)
 
             return False
 

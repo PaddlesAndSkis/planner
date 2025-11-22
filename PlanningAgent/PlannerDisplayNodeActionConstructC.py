@@ -14,11 +14,15 @@ import re
 
 class PlannerDisplayNodeActionConstructC(PlannerGraphActionConstructA):
    
+    # Constructor
+
     def __init__(self):
         super().__init__()
 
 
-    def invokeAction(self, dataDictionary, actionData, plannerKnowledgeGraph):
+    # invokeAction
+
+    def invokeAction(self, dataDictionary, actionData, plannerKnowledgeGraph) -> {}:
 
         try:
             if Global._debug: print ("Display_Node Action actionData:", actionData)
@@ -72,6 +76,12 @@ class PlannerDisplayNodeActionConstructC(PlannerGraphActionConstructA):
         # Display the shortest path.
 
         plannerKnowledgeGraph.print_shortest_path()
+
+        shortest_path_nodes = plannerKnowledgeGraph.get_shortest_path_nodes()
+
+        #for node in shortest_path_nodes:
+
+        #    print ("Application:", application)
 
 
     # display_longest_path
