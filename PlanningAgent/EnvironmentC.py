@@ -100,7 +100,7 @@ class EnvironmentC:
 
         data_list = []
 
-        for i in range(200):
+        for i in range(100):
 
             app_name = "App" + str(i)
 

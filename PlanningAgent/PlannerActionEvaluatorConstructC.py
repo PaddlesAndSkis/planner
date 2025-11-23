@@ -10,6 +10,7 @@ from PlannerAddEdgeActionConstructC import PlannerAddEdgeActionConstructC
 from PlannerSetActionConstructC import PlannerSetActionConstructC
 from PlannerSubtractActionConstructC import PlannerSubtractActionConstructC
 from PlannerDisplayNodeActionConstructC import PlannerDisplayNodeActionConstructC
+from PlannerDisplayMessageActionConstructC import PlannerDisplayMessageActionConstructC
 
 import Global
 
@@ -31,18 +32,19 @@ class PlannerActionEvaluatorConstructC:
         self.actionConstructLibrary["SET"]             = PlannerSetActionConstructC()
         self.actionConstructLibrary["SUBTRACT"]        = PlannerSubtractActionConstructC()
         self.actionConstructLibrary["DISPLAY_NODE"]    = PlannerDisplayNodeActionConstructC()
-
+        self.actionConstructLibrary["DISPLAY_MESSAGE"]    = PlannerDisplayMessageActionConstructC()
+        
 
     # invokeAction
     #
-    # [in]: action - the action to take once the condition constructs evaluate to True
+    # [in]: rule - the rule action to take once the condition constructs evaluate to True
     # [in]: dataDictionary - the dictionary of variables (keyword-value pairs)
 
     def invokeAction(self, action, dataDictionary, plannerKnowledgeGraph) -> {}:
 
         try:
 
-            if Global._debug: print ("INVOKING ACTION!!!")
+            if Global._debug: print ("Invoking the rule action:", action)
 
             # Split the action constructs by the space character.
 

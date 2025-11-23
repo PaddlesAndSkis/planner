@@ -1,5 +1,9 @@
 # PerceptionC
 
+# Import Project classes.
+
+import Global
+
 
 class PerceptionC:
 
@@ -27,7 +31,8 @@ class PerceptionC:
         # Get the plan from the user.
 
         print ("\n\n------------")
-        return input("Please enter a plan to retrieve:  rebuild, rehost, replace, best, worst: ")
+        print ("The following plans are available:", Global._plan_list)
+        return input("Please enter a plan to retrieve: ")
 
         
 
