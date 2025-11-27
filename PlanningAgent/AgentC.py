@@ -63,7 +63,7 @@ class AgentC:
 
                 plan = ""
 
-                while (plan.upper().strip() != Global._quit):
+                while (plan != Global._quit):
             
                     # Get the plan from the user.
 
@@ -72,7 +72,7 @@ class AgentC:
 
                     # Check to see if the user would like to quit.
 
-                    if (plan.upper().strip() != Global._quit):
+                    if (plan != Global._quit):
 
                         # The user has selected a plan.  Therefore, invoke it.
 
@@ -107,9 +107,19 @@ class AgentC:
 
             data_list = self.environment.load_data()
 
+            # Keep a pointer to the data list that can be used outside the Agent in a 
+            # Jupyter notebook.
+
+            Global._data_list = data_list
+
             # Get the initial data dictionary.
 
             data_dictionary = kb.get_data_dictionary()
+
+            # Keep a pointer to the rules that can be used outside the Agent in a 
+            # Jupyter notebook.
+
+            Global._rules = kb.get_rules()
 
             # Iterate over the data in the data list from the environment and
             # invoke the Rules Engine.

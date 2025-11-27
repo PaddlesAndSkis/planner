@@ -26,6 +26,7 @@ class PlannerDisplayNodeActionConstructC(PlannerGraphActionConstructA):
     def invokeAction(self, dataDictionary, actionData, plannerKnowledgeGraph) -> {}:
 
         try:
+
             if Global._debug: print ("Display_Node Action actionData:", actionData)
             if Global._debug: print ("Display_Node Action dataDictionary:", dataDictionary)
 
@@ -34,8 +35,7 @@ class PlannerDisplayNodeActionConstructC(PlannerGraphActionConstructA):
 
             plan_name        = actionData[1] #.upper()  # .strip()
             attribute_name   = actionData[2] #.upper()  # .strip()
-          #  attribute_value = actionData[2] #.upper()  # .strip()
-            node_name         = actionData[5]  #.delete('()').strip
+            node_name        = actionData[5]  #.delete('()').strip
 
             if Global._debug: print ("Display_Node Action:", attribute_name, " on Node named", node_name)
 
@@ -43,11 +43,11 @@ class PlannerDisplayNodeActionConstructC(PlannerGraphActionConstructA):
 
             # Determine which information to display.
 
-            if (node_name == 'retire'):
+            if (node_name == 'shortest_path'):
 
                 self.display_shortest_path(plannerKnowledgeGraph)
 
-            elif (node_name == 'sustain'):
+            elif (node_name == 'longest_path'):
 
                 self.display_longest_path(plannerKnowledgeGraph)
 
@@ -69,24 +69,50 @@ class PlannerDisplayNodeActionConstructC(PlannerGraphActionConstructA):
 
     def display_shortest_path(self, plannerKnowledgeGraph):
 
-        # Display the shortest path.
-
-        plannerKnowledgeGraph.print_shortest_path()
+        # Retrieve the shortest path nodes from the graph.
 
         shortest_path_nodes = plannerKnowledgeGraph.get_shortest_path_nodes()
 
-        #for node in shortest_path_nodes:
+        # Display the shortest path.
 
-        #    print ("Application:", application)
+        if Global._debug: print ("Shortest path through the graph:", shortest_path_nodes)
+
+        # Pop the shortest path nodes to remove the End node.
+
+        shortest_path_nodes.pop()
+
+        # Get the last leaf node which will contain all the entities that made it to the last node.
+
+        last_leaf_node = shortest_path_nodes.pop()
+
+        entities = plannerKnowledgeGraph.get_node_applications(last_leaf_node, "application")
+
+        print ("Entities:", entities) if (len(entities) > 0) else print ("This plan does not have any entities.")
 
 
     # display_longest_path
 
     def display_longest_path(self, plannerKnowledgeGraph):
 
+        # Retrieve the shortest path nodes from the graph.
+
+        longest_path_nodes = plannerKnowledgeGraph.get_longest_path_nodes()
+
         # Display the longest path.
 
-        plannerKnowledgeGraph.print_longest_path()
+        if Global._debug: print ("Longest path through the graph:", longest_path_nodes)
+
+        # Pop the shortest path nodes to remove the End node.
+
+        longest_path_nodes.pop()
+
+        # Get the last leaf node which will contain all the entities that made it to the last node.
+
+        last_leaf_node = longest_path_nodes.pop()
+
+        entities = plannerKnowledgeGraph.get_node_applications(last_leaf_node, "application")
+
+        print ("Entities:", entities) if (len(entities) > 0) else print ("This plan does not have any entities.")
 
 
     # display_node_via_search
@@ -94,6 +120,10 @@ class PlannerDisplayNodeActionConstructC(PlannerGraphActionConstructA):
     def display_node_via_search(self, plan_name, search_criteria, plannerKnowledgeGraph) -> {}:
 
         try:
+
+            # Print out the plan name.
+
+            print ("PLAN:", plan_name)
 
             matched_nodes_list = []
             search_criteria_tokens =  re.split(r"\+", search_criteria)
@@ -106,18 +136,18 @@ class PlannerDisplayNodeActionConstructC(PlannerGraphActionConstructA):
             if Global._debug: print ("Final nodes list = ", final_nodes_list)
             if Global._debug: print ("Final nodes list sorted = ", sorted(final_nodes_list))
 
-            final_application_list = []
+            final_entities_list = []
 
             for final_node in final_nodes_list:
-                plannerKnowledgeGraph.print_node_applications(final_node, "application")
-                applications = plannerKnowledgeGraph.get_node_applications(final_node, "application")
 
-                final_application_list.append(applications)
+                entities = plannerKnowledgeGraph.get_node_applications(final_node, "application")
 
-            if Global._debug: print ("PLAN:", plan_name)
-            if Global._debug: print ("------------------")
-            if Global._debug: print ("The final application list for plan,", plan_name, "is:\n\n", final_application_list)
+                final_entities_list.append(entities)
 
+            print ("PLAN:", plan_name)
+            print ("------------------")
+            print ("The final application list for plan,", plan_name, "is:\n\n", final_entities_list) if (len(final_entities_list) > 0) else print ("This plan does not have any entities.")
+        
         except Exception as e:
 
             # Catch, log and raise all exceptions.

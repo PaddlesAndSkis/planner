@@ -15,7 +15,16 @@ class PlannerKnowledgeGraphC:
     def __init__(self):
 
         self.G = nx.DiGraph()
-        self.G.add_node("Start", node="Start", application="n/a")
+
+        # Add the Start node to the graph.
+        
+        self.add_node("Start", "Start", "application", "n/a")
+
+
+    # get_graph
+    
+    def get_graph(self):
+        return self.G
 
 
     # add_node
@@ -49,6 +58,7 @@ class PlannerKnowledgeGraphC:
             self.G.add_node(node_id, node=node_id, name=node_name)
             self.G.nodes[node_id][attribute_name] = attribute_list
             self.G.nodes[node_id]["description"] = attribute_list
+            self.G.nodes[node_id][attribute_name+"_count"] = len(attribute_list)
 
         except Exception as e:
 
@@ -65,7 +75,6 @@ class PlannerKnowledgeGraphC:
         # Add an edge between the source node and destination node.
         # Add the weight.
 
-
         self.G.add_edge(current_node, dest_node, weight=int(weight))
 
     
@@ -73,15 +82,29 @@ class PlannerKnowledgeGraphC:
 
     def add_end_node(self):
 
-        # Get all of the leaf nodes in the graph.
+        try:
 
-        leaf_nodes = [node for node in self.G.nodes() if self.G.out_degree(node) == 0]
+            # Add the end node to the graph.
 
-        # Iterate through the leaf nodes and add an edge to the End node.
+            self.add_node("End", "End", "application", "n/a")
 
-        for leaf_node in leaf_nodes:
+            # Get all of the leaf nodes in the graph.
+
+            leaf_nodes = [node for node in self.G.nodes() if self.G.out_degree(node) == 0]
+
+            # Iterate through the leaf nodes and add an edge to the End node.  Add a default
+            # weighting.
+
+            for leaf_node in leaf_nodes:
             
-            self.add_edge(leaf_node, "End", 0)
+                self.add_edge(leaf_node, "End", 1)
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("PlannerKnowledgeGraphC Exception:", e)
+            raise e
 
 
     # get_node_applications
@@ -134,9 +157,73 @@ class PlannerKnowledgeGraphC:
         if Global._debug: print ("\nShortest path by weight:", nx.shortest_path(self.G, source_node, dest_node, weight='weight'))
         if Global._debug: print ("\nShortest path length:", nx.shortest_path_length(self.G, source_node, dest_node, weight='weight'))
 
+
+    # get_longest_path_nodes
+
+    def get_longest_path_nodes(self) -> []:
+
+        # Define the source and destination nodes.
+
+        source_node = "Start"
+        dest_node = "End"
+
+        # Initialize the high watermark weight and longest path.
+
+        high_watermark_weight = 0
+        longest_path = []
+
+        if Global._debug: print ("Is the graph cyclic?", nx.is_directed_acyclic_graph(self.G))
+
+        # Identify all paths in the graph from the source node to the destination node.
+
+        all_paths = list(nx.all_simple_paths(self.G, source_node, dest_node))
+        if Global._debug: print ("All paths in the graph from", source_node, "to", dest_node, ":", all_paths)
+
+        # Iterate through all the paths in the graph to determine which one is the longest one by weight.
+
+        for path in all_paths:
+
+            if Global._debug: print ("Evaluating path:", path)
+
+            path_weight = 0
+
+            # Iterate over all the nodes in the path.
+
+            for i in range (len(path) - 1):
+
+                # Determine if an edge exists (it should!) between the current node and the next node in the
+                # path.
+
+                if (self.G.has_edge(path[i], path[i+1])):
+
+                    # An edge exists, therefore add its weight to the path's weight.
+
+                    path_weight = path_weight + self.G[path[i]][path[i+1]]["weight"]
+
+            if Global._debug: print ("Path weight: ", path_weight)
+
+            # If the path's weight is larger than the high watermark, this path is now the
+            # longest path.
+
+            if (path_weight > high_watermark_weight):
+
+                # Set this path to be the longest path.
+
+                high_watermark_weight = path_weight
+                longest_path = path
+
+                if Global._debug: print ("This path is now the longest path")
+
+        if Global._debug: print ("Longest path in the graph (weight = ", high_watermark_weight, "):", longest_path)
+        
+        return longest_path
+
+
+    # print_longest_path(self):
+
     def print_longest_path(self):
 
-        if Global._debug: print ("\nLongest path:", nx.dag_longest_path(self.G, weight='weight'))
+        if Global._debug: print ("Longest path in the graph:", self.get_longest_path_nodes())
 
 
     def print(self):

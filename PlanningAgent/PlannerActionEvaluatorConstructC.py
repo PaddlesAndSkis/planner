@@ -32,7 +32,7 @@ class PlannerActionEvaluatorConstructC:
         self.actionConstructLibrary["SET"]             = PlannerSetActionConstructC()
         self.actionConstructLibrary["SUBTRACT"]        = PlannerSubtractActionConstructC()
         self.actionConstructLibrary["DISPLAY_NODE"]    = PlannerDisplayNodeActionConstructC()
-        self.actionConstructLibrary["DISPLAY_MESSAGE"]    = PlannerDisplayMessageActionConstructC()
+        self.actionConstructLibrary["DISPLAY_MESSAGE"] = PlannerDisplayMessageActionConstructC()
         
 
     # invokeAction

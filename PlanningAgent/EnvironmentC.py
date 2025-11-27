@@ -64,6 +64,13 @@ class EnvironmentC:
         self.rules_file = rules_file
 
 
+    # get_data_list
+
+    def get_data_list(self) -> []:
+
+        return self.data_list
+
+
     # get_environment_input
 
     def get_environment_input(self) -> []:

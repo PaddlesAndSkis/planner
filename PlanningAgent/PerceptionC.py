@@ -30,9 +30,23 @@ class PerceptionC:
 
         # Get the plan from the user.
 
-        print ("\n\n------------")
-        print ("The following plans are available:", Global._plan_list)
-        return input("Please enter a plan to retrieve: ")
+        while (True):
+
+            print ("\n\n------------")
+            print ("The following plans are available:", Global._plan_list)
+            plan = input("Please enter a plan to retrieve: ").strip().lower()
+
+            # Ensure the plan is valid or is "Quit".
+
+            if (plan in Global._plan_list):
+
+                return plan
+
+            else:
+
+                print ("Plan", plan, "is not valid.  Please select a plan or Quit to exit.")
+
+        
 
         
 

@@ -605,42 +605,99 @@
 
   {
     "id": "PLAN-1",
-    "name": "Identify Poor Performing Applications",
+    "name": "Applications to Retire Plan",
+    "description": "Applications that are candidates for retirement will have the lowest weighting from Start to End and are a high priority.",
+    "condition": "[(planning is in_progress) AND (plan is retire)] ;",
+    "action": "DISPLAY_MESSAGE Summary: Applications that are candidates for retirement will have the lowest assessments in each category.\n These are a high priority."
+  },
+
+  {
+    "id": "PLAN-1a",
+    "name": "Identify Applications to Retire",
     "description": "The poorest performing applications will have the lowest weighting from Start to End and are a high priority.",
-    "condition": "[(planning is in_progress) AND (plan is shortest_path)] ;",
-    "action": "DISPLAY_NODE application on node shortest_path"
+    "condition": "[(planning is in_progress) AND (plan is retire)] ;",
+    "action": "DISPLAY_NODE retire application on node shortest_path"
   },
 
   {
     "id": "PLAN-2",
-    "name": "Identify Best Performing Applications",
+    "name": "Applications to Sustain Plan",
     "description": "The best performing applications will have the highest weighting from Start to End and are a low priority.",
-    "condition": "[(planning is in_progress) AND (plan is longest_path)] ;",
-    "action": "DISPLAY_NODE application on node longest_path"
+    "condition": "[(planning is in_progress) AND (plan is sustain)] ;",
+    "action": "DISPLAY_MESSAGE The applications to sustain will have the highest weighting from Start to End and are a low priority."
+  },
+
+  {
+    "id": "PLAN-2a",
+    "name": "Identify Applications to Sustain",
+    "description": "The best performing applications will have the highest weighting from Start to End and are a low priority.",
+    "condition": "[(planning is in_progress) AND (plan is sustain)] ;",
+    "action": "DISPLAY_NODE sustain application on node longest_path"
   },
 
   {
     "id": "PLAN-3",
-    "name": "Identify Applications to Retire",
-    "description": "Applications that need to be retired are low business value, low technical condition and high cost.",
-    "condition": "[(planning is in_progress) AND (plan is retire)] ;",
-    "action": "DISPLAY_NODE application on node Low_business_value+High_technical_condition+High_application_cost"
+    "name": "Applications to Refactor Plan",
+    "description": "Applications that need to be refactored are low business value, low technical condition and high cost.",
+    "condition": "[(planning is in_progress) AND (plan is refactor)] ;",
+    "action": "DISPLAY_MESSAGE Applications that need to be retired are low business value, low technical condition and high cost."
+  },
+
+  {
+    "id": "PLAN-3a",
+    "name": "Identify Applications to Refactor",
+    "description": "Applications that need to be refactored are low business value, low technical condition and high cost.",
+    "condition": "[(planning is in_progress) AND (plan is refactor)] ;",
+    "action": "DISPLAY_NODE refactor application on node Low_business_value+High_technical_condition+High_application_cost"
+  },
+
+  {
+    "id": "PLAN-3b",
+    "name": "Refactor Recommendations",
+    "description": "Next steps to explore.",
+    "condition": "[(planning is in_progress) AND (plan is refactor)] ;",
+    "action": "DISPLAY_MESSAGE Next step is to look at those applications with a High Application Risk to prioritize."
   },
 
   {
     "id": "PLAN-4",
+    "name": "Applications to Replace Plan",
+    "description": "Applications that need to be replaced are high business value, low technical condition and high risk.",
+    "condition": "[(planning is in_progress) AND (plan is replace)] ;",
+    "action": "DISPLAY_MESSAGE Applications that need to be replaced are high business value, low technical condition and high risk."
+  },
+
+  {
+    "id": "PLAN-4a",
     "name": "Identify Applications to Replace",
     "description": "Applications that need to be replaced are high business value, low technical condition and high risk.",
     "condition": "[(planning is in_progress) AND (plan is replace)] ;",
-    "action": "DISPLAY_NODE application on node High_business_value+Low_technical_condition+High_application_risk"
+    "action": "DISPLAY_NODE replace application on node High_business_value+Low_technical_condition+High_application_risk"
   },
 
   {
     "id": "PLAN-5",
+    "name": "Applications to Rebuild Plan",
+    "description": "Applications that need to be rebuilt are high business value, low technical condition and low modernization.",
+    "condition": "[(planning is in_progress) AND (plan is rebuild)] ;",
+    "action": "DISPLAY_MESSAGE Applications for Rebuild are high business value, low technical condition and low modernization."
+  },
+
+  {
+    "id": "PLAN-5a",
     "name": "Identify Applications to Rebuild",
     "description": "Applications that need to be rebuilt are high business value, low technical condition and low modernization.",
     "condition": "[(planning is in_progress) AND (plan is rebuild)] ;",
-    "action": "DISPLAY_NODE application on node Low_modernization+High_business_value+Low_technical_condition+High_application_risk"
+    "action": "DISPLAY_NODE rebuild application on node Low_modernization+High_business_value+Low_technical_condition+High_application_risk"
+  },
+
+
+  {
+    "id": "PLAN-Resource",
+    "name": "Identify APM Resources",
+    "description": "Providing information as to where to go next.",
+    "condition": "[(planning is in_progress)] ;",
+    "action": "DISPLAY_MESSAGE Resources: For more information, please consult the following URL: https:\\abc.com]"
   }
 
 

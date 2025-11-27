@@ -14,7 +14,7 @@ _manual_drive = True
 
 # Plan variables.
 
-_quit     = "QUIT"
+_quit     = "quit"
 _rebuild  = "rebuild"
 _rehost   = "rehost"
 _replace  = "replace"
@@ -31,6 +31,12 @@ _right_square_bracket = "]"
 _condition_EOL = ";"
 _and = "AND"
 _or = "OR"
+
+# Pointers to data that can be used outside the Agent.
+    
+_planner_knowledge_graph = None
+_data_list = []
+_rules = []
 
 
 #Rehost. Often referred to as lift and shift, this strategy is a cost-effective way to take advantage of a modern cloud infrastructure without modifying an application’s code.
