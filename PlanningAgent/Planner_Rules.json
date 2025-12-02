@@ -691,13 +691,52 @@
     "action": "DISPLAY_NODE rebuild application on node Low_modernization+High_business_value+Low_technical_condition+High_application_risk"
   },
 
+  {
+    "id": "PLAN-6",
+    "name": "Applications to Rehost Plan",
+    "description": "Applications that need to be rehosted are high technical condition, high cost and low modernization.",
+    "condition": "[(planning is in_progress) AND (plan is rehost)] ;",
+    "action": "DISPLAY_MESSAGE Applications that need to be rehosted are high technical condition, high cost and low modernization."
+  },
+
+  {
+    "id": "PLAN-6a",
+    "name": "Identify Applications to Rehost",
+    "description": "Applications that need to be rehosted are high technical condition, high cost and low modernization.",
+    "condition": "[(planning is in_progress) AND (plan is rehost)] ;",
+    "action": "DISPLAY_NODE rehost application on node High_technical_condition+High_application_cost+Low_modernization"
+  },
+
+  {
+    "id": "PLAN-6b",
+    "name": "Rehost Recommendations",
+    "description": "Next steps to explore.",
+    "condition": "[(planning is in_progress) AND (plan is rehost)] ;",
+    "action": "DISPLAY_MESSAGE Next step is to look at applications that can be rehosted in the cloud."
+  },
+
+  {
+    "id": "PLAN-7",
+    "name": "Applications to Tolerate Plan",
+    "description": "Applications that are tolerated are high technical condition but low business value.",
+    "condition": "[(planning is in_progress) AND (plan is tolerate)] ;",
+    "action": "DISPLAY_MESSAGE Applications that are tolerated are high technical condition but low business value."
+  },
+
+  {
+    "id": "PLAN-7a",
+    "name": "Identify Applications to Tolerate",
+    "description": "Applications that are tolerated are high technical condition but low business value.",
+    "condition": "[(planning is in_progress) AND (plan is tolerate)] ;",
+    "action": "DISPLAY_NODE tolerate application on node High_technical_condition+Low_business_value"
+  },
 
   {
     "id": "PLAN-Resource",
     "name": "Identify APM Resources",
     "description": "Providing information as to where to go next.",
     "condition": "[(planning is in_progress)] ;",
-    "action": "DISPLAY_MESSAGE Resources: For more information, please consult the following URL: https:\\abc.com]"
+    "action": "DISPLAY_MESSAGE Resources: For more information, please consult the following URL: https://learn.microsoft.com/en-us/azure/app-modernization-guidance/plan/the-6-rs-of-application-modernization]"
   }
 
 

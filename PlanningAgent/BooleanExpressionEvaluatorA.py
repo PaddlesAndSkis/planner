@@ -1,6 +1,4 @@
-# BooleanExpressionEvaluatorA.rb
-#
-# Abstract class for evaluating boolean expressions.
+# BooleanExpressionEvaluatorA
 
 # Import libraries.
 
@@ -11,8 +9,6 @@ import re
 
 import Global
 
-
-# Class: BooleanExpressionEvaluatorA
 
 class BooleanExpressionEvaluatorA(ABC):
 
@@ -321,12 +317,9 @@ class BooleanExpressionEvaluatorA(ABC):
 
                 self.currentTokenIndex = self.currentTokenIndex + 1
 
-              #  print ("currentTokenIndex = ", self.currentTokenIndex)
-              #  print ("self.booleanExpression = ", self.booleanExpression)
-
                 i = 0
                 for toke in self.booleanExpression:
-                #    print (i, ' ', self.booleanExpression[i]);
+
                     i = i + 1
 
                 currentToken = self.booleanExpression[self.currentTokenIndex]

@@ -1,6 +1,4 @@
 # PlannerActionEvaluatorConstructC
-#
-# Class that evaluates the rule actions.
 
 # Import libraries.
 
@@ -14,8 +12,6 @@ from PlannerDisplayMessageActionConstructC import PlannerDisplayMessageActionCon
 
 import Global
 
-
-# Class PlanterboxActionEvaluatorConstructC
 
 class PlannerActionEvaluatorConstructC:
 

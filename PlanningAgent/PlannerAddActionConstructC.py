@@ -28,8 +28,8 @@ class PlannerAddActionConstructC(PlannerGraphActionConstructA):
 
             # "ADD <value> to <dictionary_variable>"
 
-            value               = actionData[1] #.upper()  # .strip()
-            dictionary_variable = actionData[3].upper()  #.delete('()').strip
+            value               = actionData[1] 
+            dictionary_variable = actionData[3].upper()  
 
             if Global._debug: print ("Add Action:", value, "will be added to", dictionary_variable)
 

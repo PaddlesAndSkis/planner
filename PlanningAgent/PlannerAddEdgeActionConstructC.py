@@ -1,16 +1,19 @@
-# PlannerAddNodeActionConstructC
+# PlannerAddEdgeActionConstructC
 
 from PlannerActionConstructA import PlannerActionConstructA
 from PlannerGraphActionConstructA import PlannerGraphActionConstructA
 import Global
 
 
-
 class PlannerAddEdgeActionConstructC(PlannerGraphActionConstructA):
    
+    # Constructor
+
     def __init__(self):
         super().__init__()
 
+
+    # invokeAction
 
     def invokeAction(self, dataDictionary, actionData, plannerKnowledgeGraph) -> {}:
 
@@ -21,11 +24,9 @@ class PlannerAddEdgeActionConstructC(PlannerGraphActionConstructA):
 
             # Add dest to current weighted weight
 
-            dest_node     = actionData[1] #.upper()  # .strip()
-            current_node  = actionData[3]  #.delete('()').strip
-            weight        = actionData[5]  #.delete('()').strip
-
-            # TO_DO: if actionData[2] != 'to' or actionData[4] != 'weighted' then: Usage: ADD_EDGE <dest> to <current> weighted <weight>
+            dest_node     = actionData[1] 
+            current_node  = actionData[3] 
+            weight        = actionData[5] 
 
             if Global._debug: print ("Add_Edge Action: an edge from", current_node, "to", dest_node, "weighted", weight, "will be created.")
 

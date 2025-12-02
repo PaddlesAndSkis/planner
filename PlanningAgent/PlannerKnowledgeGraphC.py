@@ -14,11 +14,22 @@ class PlannerKnowledgeGraphC:
 
     def __init__(self):
 
-        self.G = nx.DiGraph()
+        try:
 
-        # Add the Start node to the graph.
+            # Create the Directed Graph.
+
+            self.G = nx.DiGraph()
+
+            # Add the Start node to the graph.
         
-        self.add_node("Start", "Start", "application", "n/a")
+            self.add_node("Start", "Start", "application", "n/a")
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("PlannerKnowledgeGraphC Exception:", e)
+            raise e
 
 
     # get_graph
@@ -72,10 +83,19 @@ class PlannerKnowledgeGraphC:
 
     def add_edge(self, current_node, dest_node, weight):
         
-        # Add an edge between the source node and destination node.
-        # Add the weight.
+        try:
 
-        self.G.add_edge(current_node, dest_node, weight=int(weight))
+            # Add an edge between the source node and destination node.
+            # Add the weight.
+
+            self.G.add_edge(current_node, dest_node, weight=int(weight))
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("PlannerKnowledgeGraphC Exception:", e)
+            raise e
 
     
     # add_end_node
@@ -115,10 +135,6 @@ class PlannerKnowledgeGraphC:
 
         return self.G.nodes[node_id][attribute_name]
 
-        # Print out the node's attribute values give the node ID and attribute name.
-
-      #  print ("Node ", node_id, "is named", self.G.nodes[node_id]["name"], "and contains attributes:", self.G.nodes[node_id][attribute_name])
-
 
     # print_node_applications
 
@@ -129,15 +145,31 @@ class PlannerKnowledgeGraphC:
         print ("Node ", node_id, "is named", self.G.nodes[node_id]["name"], "and contains attributes:", self.G.nodes[node_id][attribute_name])
 
 
+    # print_leaf_nodes
+
     def print_leaf_nodes(self, attribute_name):
 
-        leaf_nodes = [node for node in self.G.nodes() if self.G.out_degree(node) == 0]
+        try:
+            # Get all of the leaf nodes in the graph.
 
-        print ("leaf nodes:", leaf_nodes)
+            leaf_nodes = [node for node in self.G.nodes() if self.G.out_degree(node) == 0]
 
-        for leaf_node in leaf_nodes:
-            self.print_node_applications(leaf_node, attribute_name)
+            print ("leaf nodes:", leaf_nodes)
 
+            # Iterate through the leaf nodes and print the node attributes.
+
+            for leaf_node in leaf_nodes:
+                self.print_node_applications(leaf_node, attribute_name)
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("PlannerKnowledgeGraphC Exception:", e)
+            raise e
+
+
+    # get_shortest_path_nodes
 
     def get_shortest_path_nodes(self) -> []:
 
@@ -147,10 +179,16 @@ class PlannerKnowledgeGraphC:
         return nx.astar_path(self.G, source_node, dest_node, heuristic=None, weight='manhattan_distance')
 
 
+    # print_shortest_path
+
     def print_shortest_path(self):
+
+        # Define the start and end nodes.
 
         source_node = "Start"
         dest_node = "End"
+
+        # Print a collection of shortest paths.
 
         if Global._debug: print ("\nShortest Dijkstra path:", nx.shortest_path(self.G, source_node, dest_node, weight=None, method='dijkstra'))
         if Global._debug: print ("\nShortest A* path:", nx.astar_path(self.G, source_node, dest_node, heuristic=None, weight='manhattan_distance'))
@@ -162,61 +200,70 @@ class PlannerKnowledgeGraphC:
 
     def get_longest_path_nodes(self) -> []:
 
-        # Define the source and destination nodes.
+        try:
 
-        source_node = "Start"
-        dest_node = "End"
+            # Define the source and destination nodes.
 
-        # Initialize the high watermark weight and longest path.
+            source_node = "Start"
+            dest_node = "End"
 
-        high_watermark_weight = 0
-        longest_path = []
+            # Initialize the high watermark weight and longest path.
 
-        if Global._debug: print ("Is the graph cyclic?", nx.is_directed_acyclic_graph(self.G))
+            high_watermark_weight = 0
+            longest_path = []
 
-        # Identify all paths in the graph from the source node to the destination node.
+            if Global._debug: print ("Is the graph cyclic?", nx.is_directed_acyclic_graph(self.G))
 
-        all_paths = list(nx.all_simple_paths(self.G, source_node, dest_node))
-        if Global._debug: print ("All paths in the graph from", source_node, "to", dest_node, ":", all_paths)
+            # Identify all paths in the graph from the source node to the destination node.
 
-        # Iterate through all the paths in the graph to determine which one is the longest one by weight.
+            all_paths = list(nx.all_simple_paths(self.G, source_node, dest_node))
+            if Global._debug: print ("All paths in the graph from", source_node, "to", dest_node, ":", all_paths)
 
-        for path in all_paths:
+            # Iterate through all the paths in the graph to determine which one is the longest one by weight.
 
-            if Global._debug: print ("Evaluating path:", path)
+            for path in all_paths:
 
-            path_weight = 0
+                if Global._debug: print ("Evaluating path:", path)
 
-            # Iterate over all the nodes in the path.
+                path_weight = 0
 
-            for i in range (len(path) - 1):
+                # Iterate over all the nodes in the path.
 
-                # Determine if an edge exists (it should!) between the current node and the next node in the
-                # path.
+                for i in range (len(path) - 1):
 
-                if (self.G.has_edge(path[i], path[i+1])):
+                    # Determine if an edge exists (it should!) between the current node and the next node in the
+                    # path.
 
-                    # An edge exists, therefore add its weight to the path's weight.
+                    if (self.G.has_edge(path[i], path[i+1])):
 
-                    path_weight = path_weight + self.G[path[i]][path[i+1]]["weight"]
+                        # An edge exists, therefore add its weight to the path's weight.
 
-            if Global._debug: print ("Path weight: ", path_weight)
+                        path_weight = path_weight + self.G[path[i]][path[i+1]]["weight"]
 
-            # If the path's weight is larger than the high watermark, this path is now the
-            # longest path.
+                if Global._debug: print ("Path weight: ", path_weight)
 
-            if (path_weight > high_watermark_weight):
+                # If the path's weight is larger than the high watermark, this path is now the
+                # longest path.
 
-                # Set this path to be the longest path.
+                if (path_weight > high_watermark_weight):
 
-                high_watermark_weight = path_weight
-                longest_path = path
+                    # Set this path to be the longest path.
 
-                if Global._debug: print ("This path is now the longest path")
+                    high_watermark_weight = path_weight
+                    longest_path = path
 
-        if Global._debug: print ("Longest path in the graph (weight = ", high_watermark_weight, "):", longest_path)
+                    if Global._debug: print ("This path is now the longest path")
+
+            if Global._debug: print ("Longest path in the graph (weight = ", high_watermark_weight, "):", longest_path)
         
-        return longest_path
+            return longest_path
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("PlannerKnowledgeGraphC Exception:", e)
+            raise e
 
 
     # print_longest_path(self):
@@ -226,165 +273,162 @@ class PlannerKnowledgeGraphC:
         if Global._debug: print ("Longest path in the graph:", self.get_longest_path_nodes())
 
 
+    # print
+
     def print(self):
 
-        print("!!!! NODES:", self.G.nodes)
-        print("!!!! EDGES:", self.G.edges)
+        # Print the graph nodes and edges.
 
+        print("Graph Nodes:", self.G.nodes)
+        print("Graph Edges:", self.G.edges)
+
+
+    # breadth_first_search
 
     def breadth_first_search(self, source_node):
         
-        graph_edges = list(nx.bfs_edges(self.G, source_node))
+        try:
 
-        if Global._debug: print ("BFS Edges:", graph_edges)
+            graph_edges = list(nx.bfs_edges(self.G, source_node))
 
-        return graph_edges
+            if Global._debug: print ("BFS Edges:", graph_edges)
 
+            return graph_edges
+
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("PlannerKnowledgeGraphC Exception:", e)
+            raise e
+
+
+    # search_graph_by_name
 
     def search_graph_by_name(self, node_name):
 
-        for node_id, attributes in self.G.nodes(data=True):
+        try:
+
+            # Iterate over the nodes and print out the node id and attributes.
             
-            if (attributes.get('name') == node_name):
-
-                print ("Node_id", node_id, "is named", node_name, "and contains apps", attributes['application'])
-
-
-    def search_graph_by_names(self, node_name1, node_name2):
-
-        matched_nodes_list = []
-        both_matched_nodes_list = []
-        # Get the list of bread_first_search edges.
-
-        graph_edges = self.breadth_first_search('Start')
-
-        for u, v in graph_edges:
-
-            print ("v = ", v)
-            if (self.G.nodes[v].get("name") == node_name1):
-
-                matched_nodes_list.append(v)
-
-        print ("Matched_nodes_list = ", matched_nodes_list)
+            for node_id, attributes in self.G.nodes(data=True):
             
-        for matched_node in matched_nodes_list:
+                if (attributes.get('name') == node_name):
 
-            matched_graph_edges = self.breadth_first_search(matched_node)
+                    print ("Node_id", node_id, "is named", node_name, "and contains apps", attributes['application'])
 
-            for u, v in matched_graph_edges:
+        except Exception as e:
 
-                print ("v = ", v)
-                if (self.G.nodes[v].get("name") == node_name2):
+            # Catch, log and raise all exceptions.
 
-                    both_matched_nodes_list.append(v)
+            print ("PlannerKnowledgeGraphC Exception:", e)
+            raise e
 
-
-        print ("Both Matched_nodes_list = ", both_matched_nodes_list)
-
-        print ("The applications that")
-
-
-#    node_list = [ 'Low_business_value', 'High_technical_condition', 'Low_application_risk']
-#    matched_nodes_list = []
 
 
     # search_graph_by_multi_names
 
     def search_graph_by_multi_names(self, name_list, matched_nodes_list) -> []:
 
-        if Global._debug: print ("Recursive search graph name_list", name_list)
-        if Global._debug: print ("Recursive search graph matched_nodes_list", matched_nodes_list)
+        try:
 
-        # Check if there are still node names to be searched.
-        if (len(name_list) > 0):
+            if Global._debug: print ("Recursive search graph name_list", name_list)
+            if Global._debug: print ("Recursive search graph matched_nodes_list", matched_nodes_list)
 
-            # There is, get the last one in the list.
+            # Check if there are still node names to be searched.
 
-            node_to_match = name_list.pop()
-            if Global._debug: print ("Recursive search graph matched_nodes_list node_to_match", node_to_match)
+            if (len(name_list) > 0):
 
-        else:
+                # There is, get the last one in the list.
 
-            # No more names to search, unwind the recursive calls by returning the matched_nodes_list.
+                node_to_match = name_list.pop()
+                if Global._debug: print ("Recursive search graph matched_nodes_list node_to_match", node_to_match)
 
-            return matched_nodes_list
+            else:
 
-        # Do a breadth first search to get the list of nodes that match the node to match as
-        # especially in the lower layers there can be multiple nodes.
-        # (e.g., High_modernization)
+                # No more names to search, unwind the recursive calls by returning the matched_nodes_list.
 
-        graph_edges = self.breadth_first_search('Start')
+                return matched_nodes_list
 
-        matched_names_list = []
+            # Do a breadth first search to get the list of nodes that match the node to match as
+            # especially in the lower layers there can be multiple nodes.
+            # (e.g., High_modernization)
 
-        # Iterate over the edges in the graph (u, v).
+            graph_edges = self.breadth_first_search('Start')
 
-        for u, v in graph_edges:
+            matched_names_list = []
 
-            if Global._debug: print ("v = ", v)
+            # Iterate over the edges in the graph (u, v).
 
-            if (self.G.nodes[v].get("name") == node_to_match):
+            for u, v in graph_edges:
 
-           #     if (v not in matched_nodes_list):
-                matched_names_list.append(v)
+                if Global._debug: print ("v = ", v)
 
-        # matched_nodes_list = ['1', '1.2']
+                if (self.G.nodes[v].get("name") == node_to_match):
 
-        if Global._debug: print ("Recursive search graph List of nodes that match", node_to_match, "are", matched_names_list)
+                    matched_names_list.append(v)
 
-        # If there are no matched names then the matched names list will be empty as the
-        # matched names is a logical AND.
+            if Global._debug: print ("Recursive search graph List of nodes that match", node_to_match, "are", matched_names_list)
 
-        if (len(matched_names_list) == 0):
+            # If there are no matched names then the matched names list will be empty as the
+            # matched names is a logical AND.
+
+            if (len(matched_names_list) == 0):
         
-            name_list.clear()
+                name_list.clear()
 
-            return []
+                return []
 
-        # Iterate through the list of matched nodes to see if there is a path between it and
-        # the current set.
+            # Iterate through the list of matched nodes to see if there is a path between it and
+            # the current set.
 
-        new_matched_nodes_list = []
+            new_matched_nodes_list = []
 
-        if (len(matched_nodes_list) == 0):
+            if (len(matched_nodes_list) == 0):
 
-            new_matched_nodes_list = matched_names_list
+                new_matched_nodes_list = matched_names_list
 
-        else:
+            else:
 
-            # Iterate through the matched names and matched nodes list to determine if there
-            # is a path between the two nodes.  Account for direction (e.g., node 2.1.1 is further down
-            # the tree than node 2.1).  Using a transitive relation: if there exists a path between
-            # A -> B and there is a path between B -> C, then there is a path between A -> B -> C
+                # Iterate through the matched names and matched nodes list to determine if there
+                # is a path between the two nodes.  Account for direction (e.g., node 2.1.1 is further down
+                # the tree than node 2.1).  Using a transitive relation: if there exists a path between
+                # A -> B and there is a path between B -> C, then there is a path between A -> B -> C
 
-            for source_node in matched_names_list:
+                for source_node in matched_names_list:
 
-                for target_node in matched_nodes_list:
+                    for target_node in matched_nodes_list:
 
-                    if (source_node != target_node):
+                        if (source_node != target_node):
 
-                        if (len(source_node) < len(target_node)):
+                            if (len(source_node) < len(target_node)):
 
-                            path_exists = nx.has_path(self.G, source=source_node, target=target_node)
-                            if Global._debug: print (f"Path exists between {source_node} and {target_node}: {path_exists}")
+                                path_exists = nx.has_path(self.G, source=source_node, target=target_node)
+                                if Global._debug: print (f"Path exists between {source_node} and {target_node}: {path_exists}")
                             
-                            if (path_exists):
+                                if (path_exists):
 
-                                new_matched_nodes_list.append(target_node)
+                                    new_matched_nodes_list.append(target_node)
 
-                        else:
+                            else:
 
-                            path_exists = nx.has_path(self.G, source=target_node, target=source_node)
-                            if Global._debug: print (f"Path exists between {target_node} and {source_node}: {path_exists}")
+                                path_exists = nx.has_path(self.G, source=target_node, target=source_node)
+                                if Global._debug: print (f"Path exists between {target_node} and {source_node}: {path_exists}")
 
-                            if (path_exists):
+                                if (path_exists):
 
-                                new_matched_nodes_list.append(source_node)
+                                    new_matched_nodes_list.append(source_node)
 
-        matched_nodes_list = new_matched_nodes_list
+            matched_nodes_list = new_matched_nodes_list
 
 
-        if Global._debug: print ("Recursive search graph END matched_nodes_list", matched_nodes_list)
+            if Global._debug: print ("Recursive search graph END matched_nodes_list", matched_nodes_list)
 
-        return self.search_graph_by_multi_names(name_list, matched_nodes_list)
+            return self.search_graph_by_multi_names(name_list, matched_nodes_list)
 
+        except Exception as e:
+
+            # Catch, log and raise all exceptions.
+
+            print ("PlannerKnowledgeGraphC Exception:", e)
+            raise e

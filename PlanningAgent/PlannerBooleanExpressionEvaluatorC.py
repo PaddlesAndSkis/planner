@@ -1,6 +1,4 @@
-# PlannerBooleanExpressionEvaluatorC.rb
-#
-# Concrete class for evaluating boolean expressions.
+# PlannerBooleanExpressionEvaluatorC
 
 # Import Project classes.
 
@@ -11,7 +9,6 @@ from PlannerIsConditionConstructC import PlannerIsConditionConstructC
 from PlannerIsGreaterThanConditionConstructC import PlannerIsGreaterThanConditionConstructC
 from PlannerIsLessThanConditionConstructC import PlannerIsLessThanConditionConstructC
 
-# Class: PlannerBooleanExpressionEvaluatorC
 
 class PlannerBooleanExpressionEvaluatorC(BooleanExpressionEvaluatorA):
 

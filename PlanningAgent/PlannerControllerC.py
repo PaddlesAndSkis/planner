@@ -21,6 +21,8 @@ class PlannerControllerC:
 
             # Start the Agent with the environment in which it is operating.
 
+            print ("The Agent goes to work...")
+
             self.agent.agent_goes_to_work(self.environment)
 
         except Exception as e:

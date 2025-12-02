@@ -12,9 +12,13 @@ import Global
 
 class PlannerAddNodeActionConstructC(PlannerGraphActionConstructA):
    
+    # Constructor
+
     def __init__(self):
         super().__init__()
 
+
+    # invokeAction
 
     def invokeAction(self, dataDictionary, actionData, plannerKnowledgeGraph) -> {}:
 
@@ -25,10 +29,10 @@ class PlannerAddNodeActionConstructC(PlannerGraphActionConstructA):
 
             # "ADD_NODE <attribute_name> <attribute_value> to <node_id> named <node_name>"
 
-            attribute_name  = actionData[1] #.upper()  # .strip()
-            attribute_value = actionData[2] #.upper()  # .strip()
-            node_id         = actionData[4]  #.delete('()').strip
-            node_name       = actionData[6]  #.delete('()').strip
+            attribute_name  = actionData[1] 
+            attribute_value = actionData[2] 
+            node_id         = actionData[4]  
+            node_name       = actionData[6]  
 
             if Global._debug: print ("Add_Node Action: a node with", attribute_name, " ", attribute_value, "will be added to", node_id, "named", node_name)
 

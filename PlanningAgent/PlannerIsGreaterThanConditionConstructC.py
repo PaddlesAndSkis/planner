@@ -13,7 +13,6 @@ class PlannerIsGreaterThanConditionConstructC(PlannerConditionConstructA):
     def __init__(self):
 
         pass
-        #super.__init()
 
 
     # evaluate

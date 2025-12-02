@@ -30,12 +30,9 @@ class PlannerDisplayNodeActionConstructC(PlannerGraphActionConstructA):
             if Global._debug: print ("Display_Node Action actionData:", actionData)
             if Global._debug: print ("Display_Node Action dataDictionary:", dataDictionary)
 
-            # "DISPLAY_PLAN application on node low_business_value+high_technical_condition+high_application_cost"
-            # "DISPLAY_PLAN application on node shortest_path"
-
-            plan_name        = actionData[1] #.upper()  # .strip()
-            attribute_name   = actionData[2] #.upper()  # .strip()
-            node_name        = actionData[5]  #.delete('()').strip
+            plan_name        = actionData[1] 
+            attribute_name   = actionData[2] 
+            node_name        = actionData[5] 
 
             if Global._debug: print ("Display_Node Action:", attribute_name, " on Node named", node_name)
 
@@ -87,7 +84,7 @@ class PlannerDisplayNodeActionConstructC(PlannerGraphActionConstructA):
 
         entities = plannerKnowledgeGraph.get_node_applications(last_leaf_node, "application")
 
-        print ("Entities:", entities) if (len(entities) > 0) else print ("This plan does not have any entities.")
+        print (entities) if (len(entities) > 0) else print ("This plan does not have any entities.")
 
 
     # display_longest_path
@@ -112,7 +109,7 @@ class PlannerDisplayNodeActionConstructC(PlannerGraphActionConstructA):
 
         entities = plannerKnowledgeGraph.get_node_applications(last_leaf_node, "application")
 
-        print ("Entities:", entities) if (len(entities) > 0) else print ("This plan does not have any entities.")
+        print (entities) if (len(entities) > 0) else print ("This plan does not have any entities.")
 
 
     # display_node_via_search
@@ -122,8 +119,6 @@ class PlannerDisplayNodeActionConstructC(PlannerGraphActionConstructA):
         try:
 
             # Print out the plan name.
-
-            print ("PLAN:", plan_name)
 
             matched_nodes_list = []
             search_criteria_tokens =  re.split(r"\+", search_criteria)
@@ -146,8 +141,8 @@ class PlannerDisplayNodeActionConstructC(PlannerGraphActionConstructA):
 
             print ("PLAN:", plan_name)
             print ("------------------")
-            print ("The final application list for plan,", plan_name, "is:\n\n", final_entities_list) if (len(final_entities_list) > 0) else print ("This plan does not have any entities.")
-        
+            print ("The final list for plan,", plan_name, ", is:\n\n", final_entities_list) if (len(final_entities_list) > 0) else print ("This plan does not have any entities.")
+
         except Exception as e:
 
             # Catch, log and raise all exceptions.
@@ -155,51 +150,3 @@ class PlannerDisplayNodeActionConstructC(PlannerGraphActionConstructA):
             print ("PlannerDisplayNodeActionConstructC Exception:", e)
             raise e
         
-
-        #planner_knowledge_graph.print_node_applications("1.1.1.1", "application")
-        #planner_knowledge_graph.print_leaf_nodes("application")
-        #planner_knowledge_graph.add_end_node()
-        
-        #planner_knowledge_graph.print()
-
-        #print("If you know the name of the node, you can iterate through all the nodes and get the name:")
-        #planner_knowledge_graph.search_graph_by_name("Low_business_value")
-        #planner_knowledge_graph.search_graph_by_name("Low_technical_condition")
-
-        #print("If you want to know which nodes have Low_business_value, Low_technical_condition, you must BFS:")
-        #planner_knowledge_graph.search_graph_by_names('Low_business_value', 'Low_technical_condition')
-
-        #print("If you want to get all the edges in a breadth first search:")
-        #planner_knowledge_graph.breadth_first_search('Start')
-
-        #print("Applications that should be Tolerated")
-        #print("-------------------------------------")
-        #print("The following applications have a low business value and a high technical condition, you must BFS:")
-        #planner_knowledge_graph.search_graph_by_names('Low_business_value', 'Low_technical_condition')
-        
-        #print("If you want to know which nodes have high application risk, low modernization, you must BFS:")
-        #planner_knowledge_graph.search_graph_by_names('High_application_risk', 'Low_modernization')
-
-        #planner_knowledge_graph.print_node_applications("1", "application")
-        #planner_knowledge_graph.print_node_applications("2", "application")
-
-
-        # Application Rationalization Plan
-        #----------------------------------
-        # 1. Focus on the applications as they have scored the lowest:
-        #
-        #       - App1
-        #       - App2
-
-        # 2. These applications can be easily decommissioned as they have low business and technical value:
-
-        # 3. These applications will save you the most money as they have high application cost and low business value
-
-        # 4. These applications may be quite risky to remove as they have a high application risk.
-
-        # 5.  These applications scored the best so they can be prioritized at the bottom of the list.
-
-        #  Here are some charts:
-
-        #  Here is the graph that was built to explore
-

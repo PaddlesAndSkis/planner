@@ -84,13 +84,8 @@ class RulesEngineC():
                     if Global._info: print ("A rule named", rule["name"], "has been activated.")
                     if Global._info: print (rule["description"])
 
-                    # Update the action with the resolved variables.
-                    
-               #     rule["action"] = action
-
                     # Invoke the action and update the data dictionary.
 
-              #      data_dictionary = self.plannerActionEvaluator.invokeAction(rule, data_dictionary, self.planner_knowledge_graph)
                     data_dictionary = self.plannerActionEvaluator.invokeAction(action, data_dictionary, self.planner_knowledge_graph)
 
                     if Global._debug: print ("Data Dictionary Post-Action:", data_dictionary)

@@ -17,6 +17,7 @@ class PlannerDisplayMessageActionConstructC(PlannerGraphActionConstructA):
     def __init__(self):
         super().__init__()
 
+
     # invokeAction
 
     def invokeAction(self, dataDictionary, actionData, plannerKnowledgeGraph) -> {}:

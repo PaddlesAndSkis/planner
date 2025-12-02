@@ -76,9 +76,9 @@ class EnvironmentC:
     def get_environment_input(self) -> []:
 
         # This input can be from the user / environment either entered through an interface
-        # or a file.  For now, just hardcode it.
+        # or a file.  For now, just hardcode several options.
 
-        input_from_env = [ 'shortest_path', 'longest_path', 'retire', 'replace', 'rebuild']
+        input_from_env = [ 'retire', 'sustain', 'rehost', 'replace', 'rebuild']
 
         return input_from_env
 
@@ -87,6 +87,11 @@ class EnvironmentC:
 
     def load_data(self) -> []:
         
+        # Test data
+        #
+        # Note that this data typically would be read in from an Excel spreadsheet, database or some other
+        # data source.
+
         client_satisfaction_domain = ['great', 'good', 'okay', 'bad']
         business_criticality_domain = ['yes' , 'no']
 
