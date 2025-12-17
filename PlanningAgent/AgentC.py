@@ -4,10 +4,9 @@
 
 import Global
 
-from KnowledgeBaseC import KnowledgeBaseC
 from PerceptionC import PerceptionC
-from RulesEngineC import RulesEngineC
-
+from RulesEngine.KnowledgeBase.KnowledgeBaseC import KnowledgeBaseC
+from RulesEngine.RulesEngineC import RulesEngineC
 
 class AgentC:
 
